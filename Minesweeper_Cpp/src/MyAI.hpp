@@ -26,12 +26,26 @@
 #include <map>
 #include <set>
 #include <algorithm>
+#include <queue>
 
 using namespace std;
 
 class MyAI : public Agent
 {
+private:
+
+    struct Tile{
+        int x;
+        int y;
+    };
+    
+    int** board;
+    
+    queue<Tile> uncoveredFrontier;
+    queue<Tile> coveredFrontier;
+    
 public:
+
     MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX, int _agentY );
 
     Action getAction ( int number ) override;
@@ -40,8 +54,7 @@ public:
     // ======================================================================
     // YOUR CODE BEGINS
     // ======================================================================
-
-
+    
 
     // ======================================================================
     // YOUR CODE ENDS
