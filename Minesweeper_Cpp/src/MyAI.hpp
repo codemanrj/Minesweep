@@ -41,6 +41,8 @@ private:
     
     int** board;
     
+    Tile lastTile;
+    
     queue<Tile> uncoveredFrontier;
     queue<Tile> coveredFrontier;
     
