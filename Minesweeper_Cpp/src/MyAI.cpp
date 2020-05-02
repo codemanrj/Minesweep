@@ -37,6 +37,14 @@ MyAI::MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX,
     };
     uncoveredFrontier.push(tempTile);
     
+    for (int i = 0; i <= colDim; i++)
+    {
+        for (int j = 0; j <= rowDim; j++)
+        {
+            board[i][j] = -1; //covered tiles
+        }
+    }
+    
     // ======================================================================
     // YOUR CODE ENDS
     // ======================================================================
@@ -55,6 +63,24 @@ Agent::Action MyAI::getAction( int number )
     
     Tile curTile;
     curTile = uncoveredFrontier.front();
+    if (board[curTile.x][curTile.y] == 0)//no mines around current tile
+    {
+        for (int i = curTile.x-1; i <= curTile.x+1; i++)
+        {
+            for (int j = curTile.y-1; j <= curTile.y+1; j++)
+            {
+                if (i >= 0 && i < colDim && j >= 0 && j>= rowDim)
+                {
+                    if (board[i][j] == -1) 
+                    {
+                        uncoveredFrontier.push({i,j});//pushes new uncovered tile into queue
+                        return {UNCOVER, i, j};
+                    }
+                }
+            }
+        }
+        uncoveredFrontier.pop();//remove from queue when all neighbors uncovered
+    }
 
     return {LEAVE,-1,-1};
     // ======================================================================
