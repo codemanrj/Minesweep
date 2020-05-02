@@ -34,6 +34,8 @@ class MyAI : public Agent
 {
 private:
 
+    double total_time_elapsed = 0.0
+
     struct Tile{
         int x;
         int y;
@@ -61,6 +63,9 @@ public:
     // ======================================================================
     // YOUR CODE BEGINS
     // ======================================================================
+
+    // Helper functions?
+    void pickRandomTile();
     
 
     // ======================================================================

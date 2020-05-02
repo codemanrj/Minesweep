@@ -18,13 +18,15 @@
 // ======================================================================
 
 #include "MyAI.hpp"
+#include "time.h"
 
 MyAI::MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX, int _agentY ) : Agent()
 {
     // ======================================================================
     // YOUR CODE BEGINS
     // ======================================================================
-    
+    time_t timer;
+
     lastTile.x = _agentX;
     lastTile.y = _agentY;
     totalMines = _totalMines;
@@ -57,51 +59,70 @@ Agent::Action MyAI::getAction( int number )
     // ======================================================================
     // YOUR CODE BEGINS
     // ======================================================================
-    
-    if (totalMines == 0 && coveredTiles == 0)//all mines found
-    {
-        return {LEAVE,-1,-1};
-    }
-    
-    if (number != -1)//if last action was uncover
-    {
-        board[lastTile.x][lastTile.y] = number;
-        uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
-    }
-    
-    Tile curTile;
-    curTile = uncoveredFrontier.front();
-    if (board[curTile.x][curTile.y] == 0)//no mines around current tile
-    {
-        for (int i = curTile.x-1; i <= curTile.x+1; i++)
+    double remaining_time = 300; // not sure what to initialize to yet
+
+    if(remaining_time < 3) //leaving it at 3 for now eg.
         {
-            for (int j = curTile.y-1; j <= curTile.y+1; j++)
+            //random move
+
+        }
+
+    else
+    {
+        int tS = time(&timer); //time stamp now
+
+        if (totalMines == 0 && coveredTiles == 0)//all mines found
+        {
+          return {LEAVE,-1,-1};
+        }
+    
+        if (number != -1)//if last action was uncover
+        {
+         board[lastTile.x][lastTile.y] = number;
+         uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
+        }
+    
+        Tile curTile;
+        curTile = uncoveredFrontier.front();
+        if (board[curTile.x][curTile.y] == 0)//no mines around current tile
+        {
+            //I'm assuming this uncovers all 8 around it 
+            for (int i = curTile.x-1; i <= curTile.x+1; i++)
             {
-                if (i >= 0 && i < colDim && j >= 0 && j>= rowDim)
+                for (int j = curTile.y-1; j <= curTile.y+1; j++)
                 {
-                    if (board[i][j] == -1) 
+                    if (i >= 0 && i < colDim && j >= 0 && j>= rowDim)
                     {
-                        coveredTiles--;
-                        lastTile = {i, j};
-                        return {UNCOVER, i, j};
+                        if (board[i][j] == -1) 
+                        {
+                            coveredTiles--;
+                            lastTile = {i, j};
+                            return {UNCOVER, i, j};
+                        }
                     }
                 }
             }
+            uncoveredFrontier.pop();//remove from queue when all neighbors uncovered
         }
-        uncoveredFrontier.pop();//remove from queue when all neighbors uncovered
-    }
-    else if (board[curTile.x][curTile.y] == 1)//1 mine around the tile
-    {
-        if (coveredTiles == totalMines)//if rest of covered tiles are all mines
+        else if (board[curTile.x][curTile.y] == 1)//1 mine around the tile
         {
+            if (coveredTiles == totalMines)//if rest of covered tiles are all mines
+            {
+                //flag all covered tiles around current tile
+                //subtract num of tiles around the flagged tile
+                //and subtract totalMines for each flag
+            }
+            //if (surrounding covered tiles == number on tile)
             //flag all covered tiles around current tile
             //subtract num of tiles around the flagged tile
-            //and subtract totalMines for each flag
         }
-        //if (surrounding covered tiles == number on tile)
-        //flag all covered tiles around current tile
-        //subtract num of tiles around the flagged tile
+
+        int tE = time(&timer);
+
+        int dt = tE-tS;
+        total_time_elapsed += dt;
     }
+    
 
     return {LEAVE,-1,-1};
     // ======================================================================
@@ -115,6 +136,10 @@ Agent::Action MyAI::getAction( int number )
 // YOUR CODE BEGINS
 // ======================================================================
 
+void pickRandomTile()
+{
+    
+}
 
 
 // ======================================================================
