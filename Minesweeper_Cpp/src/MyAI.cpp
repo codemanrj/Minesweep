@@ -31,11 +31,13 @@ MyAI::MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX,
     rowDim = _rowDimension;
     colDim = _colDimension;
     
+    coveredTiles = rowDim*colDim - 1;
+    
+    
     Tile tempTile = {
     _agentX,
     _agentY,
     };
-    uncoveredFrontier.push(tempTile);
     
     for (int i = 0; i <= colDim; i++)
     {
@@ -55,10 +57,16 @@ Agent::Action MyAI::getAction( int number )
     // ======================================================================
     // YOUR CODE BEGINS
     // ======================================================================
+    
+    if (totalMines == 0 && coveredTiles = 0)//all mines found
+    {
+        return {LEAVE,-1,-1};
+    }
+    
     if (number != -1)//if last action was uncover
     {
         board[lastTile.x][lastTile.y] = number;
-        
+        uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
     }
     
     Tile curTile;
@@ -73,13 +81,22 @@ Agent::Action MyAI::getAction( int number )
                 {
                     if (board[i][j] == -1) 
                     {
-                        uncoveredFrontier.push({i,j});//pushes new uncovered tile into queue
+                        coveredTiles--;
+                        lastTile = {i, j};
                         return {UNCOVER, i, j};
                     }
                 }
             }
         }
         uncoveredFrontier.pop();//remove from queue when all neighbors uncovered
+    }
+    else if (board[curTile.x][curTile.y] == 1)//1 mine around the tile
+    {
+        if (coveredTiles == totalMines)//if rest of covered tiles are all mines
+        {
+            //flag all covered tiles around current tile
+            //and subtract totalMines for each flag
+        }
     }
 
     return {LEAVE,-1,-1};
