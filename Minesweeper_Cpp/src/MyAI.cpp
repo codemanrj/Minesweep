@@ -58,7 +58,7 @@ Agent::Action MyAI::getAction( int number )
     // YOUR CODE BEGINS
     // ======================================================================
     
-    if (totalMines == 0 && coveredTiles = 0)//all mines found
+    if (totalMines == 0 && coveredTiles == 0)//all mines found
     {
         return {LEAVE,-1,-1};
     }
