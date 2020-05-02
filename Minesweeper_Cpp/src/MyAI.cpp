@@ -31,9 +31,10 @@ MyAI::MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX,
     rowDim = _rowDimension;
     colDim = _colDimension;
     
-    Tile tempTile;
-    tempTile.x = _agentX;
-    tempTile.y = _agentY;
+    Tile tempTile = {
+    _agentX,
+    _agentY,
+    };
     uncoveredFrontier.push(tempTile);
     
     // ======================================================================
