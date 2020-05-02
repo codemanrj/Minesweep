@@ -95,10 +95,12 @@ Agent::Action MyAI::getAction( int number )
         if (coveredTiles == totalMines)//if rest of covered tiles are all mines
         {
             //flag all covered tiles around current tile
+            //subtract num of tiles around the flagged tile
             //and subtract totalMines for each flag
         }
         //if (surrounding covered tiles == number on tile)
         //flag all covered tiles around current tile
+        //subtract num of tiles around the flagged tile
     }
 
     return {LEAVE,-1,-1};
