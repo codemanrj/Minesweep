@@ -41,6 +41,9 @@ private:
     
     int** board;
     
+    int totalMines;
+    int rowDim;
+    int colDim;
     Tile lastTile;
     
     queue<Tile> uncoveredFrontier;
