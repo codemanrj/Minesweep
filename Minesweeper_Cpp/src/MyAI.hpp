@@ -41,10 +41,12 @@ private:
     
     int** board;
     
-    int totalMines;
+    int totalMines; // number of mines left
+    int coveredTiles; // number of covered tiles left
+    int flagsSet = 0; // number of flags set
     int rowDim;
     int colDim;
-    Tile lastTile;
+    Tile lastTile; // x, y coordinates of last tile uncovered
     
     queue<Tile> uncoveredFrontier;
     queue<Tile> coveredFrontier;
