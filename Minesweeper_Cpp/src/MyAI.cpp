@@ -92,23 +92,28 @@ Agent::Action MyAI::getAction( int number )
 
     else if (board[curTile.x][curTile.y] == 1)//1 mine around the tile
     {
-        //if (surrounding covered tiles == number on tile)
-        //flag all covered tiles around current tile
+        
         //subtract num of tiles around the flagged tile
         int coveredNeighbors = getSurroundingCovered(curTile);
 
+      //if (surrounding covered tiles == number on tile)
+      //flag all covered tiles around current tile
+
         if(coveredNeighbors == number)
             flagAllUncoveredNeighbors(curTile);
-       
+
         //add case for random pick (how to detect when to use random?)
 
         //if all the neighbors are covered, randomly pick one
         if(coveredNeighbors == 8) //or if covered neighbors equals total neighbors
         {
             Tile randNeighbor = generateRandomNeighbor(curTile);
-
-            return{UNCOVER, randNeighbor.x, randNeighbor.y}
+            return{UNCOVER, randNeighbor.x, randNeighbor.y};
         }
+
+        //logic
+        //if curTile has number flagged nieghboring tiles
+        // all other surrounding tiles should be uncovered safely
             
 
         
@@ -138,7 +143,8 @@ void MyAI::flagTile(Tile myTile)
         {
             if (i >= 0 && i < colDimension && j >= 0 && j>= rowDimension)
             {
-                board[i][j]--;
+                if(board[i][j] > 0) //added this so only uncoverd tiles with numbers on them are affected
+                    board[i][j]--;
             }
         }
     }//subtract the effective number on surrounding tiles
@@ -206,9 +212,7 @@ MyAI::Tile MyAI::generateRandomNeighbor(Tile t)
         }
     }
 
-    Tile randNeighbor = array[rand() % size];
-
-    return randNeighbor;
+    return array[rand() % size];
 }
 
 // ======================================================================
