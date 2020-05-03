@@ -40,6 +40,8 @@ private:
     };
     
     int** board;
+    const int coveredNum = 50;
+    const int flaggedNum = 100;
     
     int totalMines; // number of mines left
     int coveredTiles; // number of covered tiles left
