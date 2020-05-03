@@ -24,18 +24,19 @@ MyAI::MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX,
     // ======================================================================
     // YOUR CODE BEGINS
     // ======================================================================
-    
     lastTile.x = _agentX;
     lastTile.y = _agentY;
     totalMines = _totalMines;
     rowDimension = _rowDimension;
     colDimension = _colDimension;
-    
+
     coveredTiles = rowDimension*colDimension - 1;
-    
-    for (int i = 0; i <= colDimension; i++)
+
+    board[rowDimension][colDimension];
+
+    for (int i = 0; i <= rowDimension; i++)
     {
-        for (int j = 0; j <= rowDimension; j++)
+        for (int j = 0; j <= colDimension; j++)
         {
             board[i][j] = coveredNum; //covered tiles
         }
@@ -70,8 +71,9 @@ Agent::Action MyAI::getAction( int number )
     curTile = uncoveredFrontier.front();
     if (board[curTile.x][curTile.y] == 0)//no mines around current tile
     {
+        //if EffectiveLabel(x) = 0, then all UnMarkedNeighbors(x) must be safe
+
         uncoveredFrontier.pop();
-        
         for (int i = curTile.x-1; i <= curTile.x+1; i++)
         {
             for (int j = curTile.y-1; j <= curTile.y+1; j++)
@@ -81,25 +83,22 @@ Agent::Action MyAI::getAction( int number )
                     if (board[i][j] <= coveredNum) //if tile is a covered tile
                     {
                         lastTile = {i, j};
-
+                        coveredTiles--;
                         return {UNCOVER, i, j};  
                     }
                 }
             }
         }
-      
     }
 
-    else if (board[curTile.x][curTile.y] == 1)//1 mine around the tile
+    else if (board[curTile.x][curTile.y] > 0)//1 or more mines around the tile
     {
         
         //subtract num of tiles around the flagged tile
         int coveredNeighbors = getSurroundingCovered(curTile);
 
-      //if (surrounding covered tiles == number on tile)
-      //flag all covered tiles around current tile
-
-        if(coveredNeighbors == number)
+        //if effectivelabel(x) = NumUnMarkedNeighbors(x) then all UnMarkedNeighbors(x) must be mines
+        if(board[curTile.x][curTile.y] == coveredNeighbors) 
             flagAllCoveredNeighbors(curTile);
 
         //add case for random pick (how to detect when to use random?)
@@ -110,7 +109,8 @@ Agent::Action MyAI::getAction( int number )
         if(coveredNeighbors == totalNeighbors) //or if covered neighbors equals total neighbors
         {
             Tile randNeighbor = generateRandomNeighbor(curTile);
-            return{UNCOVER, randNeighbor.x, randNeighbor.y};
+            coveredTiles--;
+            return {UNCOVER, randNeighbor.x, randNeighbor.y};
         }
 
         //if curTile has number flagged nieghboring tiles
@@ -127,6 +127,7 @@ Agent::Action MyAI::getAction( int number )
                     {
                         if (board[i][j] <= coveredNum && board[i][j] != flaggedNum) //if tile is a covered tile and not flagged
                         {
+                            coveredTiles--;
                             return {UNCOVER, i, j};
                         }
                     }

@@ -42,7 +42,7 @@ public:
         //
     };
     
-    int** board;
+    int** board = nullptr;
     const int coveredNum = -100;
     const int flaggedNum = -50;
     
