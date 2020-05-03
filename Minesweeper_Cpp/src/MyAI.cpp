@@ -33,6 +33,8 @@ MyAI::MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX,
     
     coveredTiles = rowDimension*colDimension - 1;
     
+    boaed = new int[colDimension][rowDimension];
+    
     for (int i = 0; i <= colDimension; i++)
     {
         for (int j = 0; j <= rowDimension; j++)
