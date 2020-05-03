@@ -37,21 +37,27 @@ private:
     struct Tile{
         int x;
         int y;
+        //could add more data:
+        //number of surrounding covered tiles
+        //
     };
     
     int** board;
     const int coveredNum = -100;
     const int flaggedNum = -50;
     
-    int totalMines; // number of mines left
+    //int totalMines; // number of mines left
     int coveredTiles; // number of covered tiles left
     int flagsSet = 0; // number of flags set
-    int rowDim;
-    int colDim;
+    //int rowDim;
+    //int colDim;
     Tile lastTile; // x, y coordinates of last tile uncovered
     
     queue<Tile> uncoveredFrontier;
     queue<Tile> coveredFrontier;
+    
+    void flagTile(Tile myTile);//flags myTile
+    int getSurroundingCovered(Tile myTile);//returns number of covered tiles around the myTile
     
 public:
 
