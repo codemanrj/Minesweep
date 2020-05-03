@@ -28,22 +28,16 @@ MyAI::MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX,
     lastTile.x = _agentX;
     lastTile.y = _agentY;
     totalMines = _totalMines;
-    rowDim = _rowDimension;
-    colDim = _colDimension;
+    rowDimension = _rowDimension;
+    colDimimension = _colDimension;
     
-    coveredTiles = rowDim*colDim - 1;
+    coveredTiles = rowDimension*colDimension - 1;
     
-    
-    Tile tempTile = {
-    _agentX,
-    _agentY,
-    };
-    
-    for (int i = 0; i <= colDim; i++)
+    for (int i = 0; i <= colDimension; i++)
     {
-        for (int j = 0; j <= rowDim; j++)
+        for (int j = 0; j <= rowDimension; j++)
         {
-            board[i][j] = -1; //covered tiles
+            board[i][j] = coveredNum; //covered tiles
         }
     }
     
@@ -58,7 +52,8 @@ Agent::Action MyAI::getAction( int number )
     // YOUR CODE BEGINS
     // ======================================================================
     
-    if (totalMines == 0 && coveredTiles == 0)//all mines found
+    //do while there is remaining time
+    if ((totalMines == coveredTiles)//all mines found
     {
         return {LEAVE,-1,-1};
     }
@@ -77,9 +72,9 @@ Agent::Action MyAI::getAction( int number )
         {
             for (int j = curTile.y-1; j <= curTile.y+1; j++)
             {
-                if (i >= 0 && i < colDim && j >= 0 && j>= rowDim)
+                if (i >= 0 && i < colDimension && j >= 0 && j>= rowDimension)
                 {
-                    if (board[i][j] == -1) 
+                    if (board[i][j] <= coveredNum) //if tile is a covered tile
                     {
                         coveredTiles--;
                         lastTile = {i, j};
@@ -92,15 +87,27 @@ Agent::Action MyAI::getAction( int number )
     }
     else if (board[curTile.x][curTile.y] == 1)//1 mine around the tile
     {
-        if (coveredTiles == totalMines)//if rest of covered tiles are all mines
-        {
-            //flag all covered tiles around current tile
-            //subtract num of tiles around the flagged tile
-            //and subtract totalMines for each flag
-        }
         //if (surrounding covered tiles == number on tile)
         //flag all covered tiles around current tile
         //subtract num of tiles around the flagged tile
+        int coveredTiles = getSurroundingCovered(Tile middle)
+        if (coveredTiles == 1)
+        {
+            for (int i = middle.x-1; i <= middle.x+1; i++)
+            {
+                for (int j = middle.y-1; j <= middle.y+1; j++)
+                {
+                    if (i >= 0 && i < colDimension && j >= 0 && j>= rowDimension)
+                    {
+                        if (board[i][j] <= coveredNum) //if tile is a covered tile
+                        {
+                            flagTile({i, j});
+                            return {FLAG, i, j};
+                        }
+                    }
+                }
+            }
+        }
     }
 
     return {LEAVE,-1,-1};
@@ -114,7 +121,40 @@ Agent::Action MyAI::getAction( int number )
 // ======================================================================
 // YOUR CODE BEGINS
 // ======================================================================
-
+        
+void MyAI::flagTile(Tile myTile)
+{
+    board[myTile.x][myTile.y] = flaggedNum;
+    for (int i = myTile.x-1; i <= myTile.x+1; i++)
+    {
+        for (int j = myTile.y-1; j <= myTile.y+1; j++)
+        {
+            if (i >= 0 && i < colDimension && j >= 0 && j>= rowDimension)
+            {
+                board[i][j]--;
+            }
+        }
+    }//subtract the effective number on surrounding tiles
+}
+        
+int MyAI::getSurroundingCovered(Tile myTile)
+{
+    int count;
+    for (int i = myTile.x-1; i <= myTile.x+1; i++)
+    {
+        for (int j = myTile.y-1; j <= myTile.y+1; j++)
+        {
+            if (i >= 0 && i < colDimension && j >= 0 && j>= rowDimension)
+            {
+                if (board[i][j] <= coveredNum) //if tile is a covered tile
+                {
+                    count++;
+                }
+            }
+        }
+    }
+    return count;
+}
 
 
 // ======================================================================
