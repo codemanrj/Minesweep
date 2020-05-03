@@ -70,9 +70,11 @@ public:
     // YOUR CODE BEGINS
     // ======================================================================
     
-    void flagAllUncoveredNeighbors(Tile t);
-
+    void flagAllCoveredNeighbors(Tile t);
+    void uncoverAllCoveredNeighbors(Tile t);
     Tile generateRandomNeighbor(Tile t);
+    int getSurroundingFlagged(Tile myTile);
+    int getTotalNeighbors(Tile myTile);
 
     // ======================================================================
     // YOUR CODE ENDS

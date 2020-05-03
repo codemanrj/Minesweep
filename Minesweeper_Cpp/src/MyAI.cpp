@@ -100,26 +100,46 @@ Agent::Action MyAI::getAction( int number )
       //flag all covered tiles around current tile
 
         if(coveredNeighbors == number)
-            flagAllUncoveredNeighbors(curTile);
+            flagAllCoveredNeighbors(curTile);
 
         //add case for random pick (how to detect when to use random?)
 
         //if all the neighbors are covered, randomly pick one
-        if(coveredNeighbors == 8) //or if covered neighbors equals total neighbors
+        int totalNeighbors = getTotalNeighbors(curTile);
+
+        if(coveredNeighbors == totalNeighbors) //or if covered neighbors equals total neighbors
         {
             Tile randNeighbor = generateRandomNeighbor(curTile);
             return{UNCOVER, randNeighbor.x, randNeighbor.y};
         }
 
-        //logic
         //if curTile has number flagged nieghboring tiles
-        // all other surrounding tiles should be uncovered safely
+        // all other surrounding unflagged tiles can be uncovered safely
+        int flaggedNeighbors = getSurroundingFlagged(curTile);
+
+        if (flaggedNeighbors == number)
+        {
+            for (int i = curTile.x-1; i <= curTile.x+1; i++)
+            {
+                for (int j = curTile.y-1; j <= curTile.y+1; j++)
+                {
+                    if (i >= 0 && i < colDimension && j >= 0 && j>= rowDimension)
+                    {
+                        if (board[i][j] <= coveredNum && board[i][j] != flaggedNum) //if tile is a covered tile and not flagged
+                        {
+                            return {UNCOVER, i, j};
+                        }
+                    }
+                }
+            }
+        }
+        
             
 
         
         
         uncoveredFrontier.pop(); //pops if no action taken
-        if (coveredTiles > 0) uncoveredFrontier.push(curTile); //requeue if there are still surrounding covered tiles
+        if (coveredNeighbors > 0) uncoveredFrontier.push(curTile); //requeue if there are still surrounding covered tiles
     }
 
     return {LEAVE,-1,-1};
@@ -172,7 +192,48 @@ int MyAI::getSurroundingCovered(Tile myTile)
     return count;
 }
 
-void MyAI::flagAllUncoveredNeighbors(Tile t)
+int MyAI::getTotalNeighbors(Tile myTile)
+{
+    int count = 0;
+
+    for (int i = myTile.x-1; i <= myTile.x+1; i++)
+    {
+        for (int j = myTile.y-1; j <= myTile.y+1; j++)
+        {
+            if (i >= 0 && i < colDimension && j >= 0 && j>= rowDimension)
+            {
+                    count++;
+            }
+        }
+    }
+
+    return count-1;
+}
+
+int MyAI::getSurroundingFlagged(Tile myTile)
+{
+     int count;
+
+    //returns a count of the covered neighbors
+
+    for (int i = myTile.x-1; i <= myTile.x+1; i++)
+    {
+        for (int j = myTile.y-1; j <= myTile.y+1; j++)
+        {
+            if (i >= 0 && i < colDimension && j >= 0 && j>= rowDimension)
+            {
+                if (board[i][j] <= flaggedNum) //if tile is a covered tile
+                {
+                    count++;
+                }
+            }
+        }
+    }
+    return count;
+
+}
+
+void MyAI::flagAllCoveredNeighbors(Tile t)
 {
     for (int i = t.x-1; i <= t.x+1; i++)
     {
