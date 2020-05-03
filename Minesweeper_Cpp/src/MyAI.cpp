@@ -68,6 +68,8 @@ Agent::Action MyAI::getAction( int number )
     curTile = uncoveredFrontier.front();
     if (board[curTile.x][curTile.y] == 0)//no mines around current tile
     {
+        int coveredTiles = getSurroundingCovered(curTile);
+        
         for (int i = curTile.x-1; i <= curTile.x+1; i++)
         {
             for (int j = curTile.y-1; j <= curTile.y+1; j++)
@@ -83,14 +85,14 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
-        uncoveredFrontier.pop();//remove from queue when all neighbors uncovered
+        if (coveredTiles == 0) uncoveredFrontier.pop();//remove from queue when all neighbors uncovered
     }
     else if (board[curTile.x][curTile.y] == 1)//1 mine around the tile
     {
         //if (surrounding covered tiles == number on tile)
         //flag all covered tiles around current tile
         //subtract num of tiles around the flagged tile
-        int coveredTiles = getSurroundingCovered(Tile middle)
+        int coveredTiles = getSurroundingCovered(curTile);
         if (coveredTiles == 1)
         {
             for (int i = middle.x-1; i <= middle.x+1; i++)
@@ -108,6 +110,10 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
+        //add case for random pick (how to detect when to use random?)
+        
+        uncoveredFrontier.pop(); //pops if no action taken
+        if (coveredTiles > 0) uncoveredFrontier.push(curTile); //requeue if there are still surrounding covered tiles
     }
 
     return {LEAVE,-1,-1};
