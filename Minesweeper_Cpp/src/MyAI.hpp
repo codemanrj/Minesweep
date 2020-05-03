@@ -32,7 +32,7 @@ using namespace std;
 
 class MyAI : public Agent
 {
-private:
+public:
 
     struct Tile{
         int x;
@@ -47,7 +47,7 @@ private:
     const int flaggedNum = -50;
     
     //int totalMines; // number of mines left
-    int coveredTiles; // number of covered tiles left
+    int coveredTiles; // number of covered tiles left on the board
     int flagsSet = 0; // number of flags set
     //int rowDim;
     //int colDim;
@@ -70,6 +70,9 @@ public:
     // YOUR CODE BEGINS
     // ======================================================================
     
+    void flagAllUncoveredNeighbors(Tile t);
+
+    Tile generateRandomNeighbor(Tile t);
 
     // ======================================================================
     // YOUR CODE ENDS
