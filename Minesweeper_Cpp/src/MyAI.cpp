@@ -30,7 +30,7 @@ MyAI::MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX,
     rowDimension = _rowDimension;
     colDimension = _colDimension;
 
-    coveredTiles = rowDimension*colDimension - 1;
+    coveredTiles = rowDimension*colDimension;
 
     board = new int*[rowDimension];
 
@@ -62,8 +62,12 @@ Agent::Action MyAI::getAction( int number )
     // ======================================================================
     
     //do while there is remaining time
-    for (int k = 0; k < uncoveredFrontier.size(); k++)
+    
+    int buf = 1;
+    
+    for (int k = 0; k < uncoveredFrontier.size() + buf; k++)
     {
+        buf = 0;
         if ((totalMines == coveredTiles))//all mines found
         {
             return {LEAVE,-1,-1};
@@ -71,10 +75,12 @@ Agent::Action MyAI::getAction( int number )
 
         //if (number != -1)//if last action was uncover
         //always the case
-
-
-        board[lastTile.x][lastTile.y] = number;
-        uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
+        //number will return -1 if last action is flag
+        if (number >= 0) 
+        {
+            board[lastTile.x][lastTile.y] = number;
+            uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
+        }
 
 
         Tile curTile;
