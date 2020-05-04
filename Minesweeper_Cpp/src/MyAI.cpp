@@ -79,9 +79,9 @@ Agent::Action MyAI::getAction( int number )
     curTile = uncoveredFrontier.front();
     if (board[curTile.x][curTile.y] == 0)//no mines around current tile
     {
+        int coveredNeighbors = getSurroundingCovered(curTile);
         //if EffectiveLabel(x) = 0, then all UnMarkedNeighbors(x) must be safe
 
-        uncoveredFrontier.pop();
         for (int i = curTile.x-1; i <= curTile.x+1; i++)
         {
             for (int j = curTile.y-1; j <= curTile.y+1; j++)
@@ -97,6 +97,7 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
+        if (coveredNeighbors == 0) uncoveredFrontier.pop();
     }
 
     else if (board[curTile.x][curTile.y] > 0)//1 or more mines around the tile
@@ -181,7 +182,7 @@ void MyAI::flagTile(Tile myTile)
         
 int MyAI::getSurroundingCovered(Tile myTile)
 {
-    int count;
+    int count = 0;
 
     //returns a count of the covered neighbors
 
@@ -221,7 +222,7 @@ int MyAI::getTotalNeighbors(Tile myTile)
 
 int MyAI::getSurroundingFlagged(Tile myTile)
 {
-     int count;
+     int count = 0;
 
     //returns a count of the covered neighbors
 
