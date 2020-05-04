@@ -32,7 +32,15 @@ MyAI::MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX,
 
     coveredTiles = rowDimension*colDimension - 1;
 
-    board[rowDimension][colDimension];
+    board = new int*[rowDimension];
+
+    boardSize = rowDimension;
+
+    for(int i = 0; i < rowDimension; i++)
+    {
+        board[i] = new int[colDimension];
+    }
+
 
     for (int i = 0; i <= rowDimension; i++)
     {

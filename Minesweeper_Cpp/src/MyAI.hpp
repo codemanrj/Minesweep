@@ -42,9 +42,10 @@ public:
         //
     };
     
-    int** board = nullptr;
+    int** board = NULL;
     const int coveredNum = -100;
     const int flaggedNum = -50;
+    int boardSize = 0;
     
     //int totalMines; // number of mines left
     int coveredTiles; // number of covered tiles left on the board
@@ -62,6 +63,18 @@ public:
 public:
 
     MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX, int _agentY );
+
+    ~MyAI()
+    {
+        for(int i = 0; i < boardSize; i++)
+        {
+            delete[] board[i];
+            board[i] = NULL;
+        }
+
+        delete[] board;
+        board = NULL;
+    }
 
     Action getAction ( int number ) override;
 
