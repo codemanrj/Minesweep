@@ -32,7 +32,7 @@ using namespace std;
 
 class MyAI : public Agent
 {
-private:
+public:
 
     struct Tile{
         int x;
@@ -42,12 +42,13 @@ private:
         //
     };
     
-    int** board;
+    int** board = NULL;
     const int coveredNum = -100;
     const int flaggedNum = -50;
+    int boardSize = 0;
     
     //int totalMines; // number of mines left
-    int coveredTiles; // number of covered tiles left
+    int coveredTiles; // number of covered tiles left on the board
     int flagsSet = 0; // number of flags set
     //int rowDim;
     //int colDim;
@@ -63,6 +64,18 @@ public:
 
     MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX, int _agentY );
 
+    ~MyAI()
+    {
+        for(int i = 0; i < boardSize; i++)
+        {
+            delete[] board[i];
+            board[i] = NULL;
+        }
+
+        delete[] board;
+        board = NULL;
+    }
+
     Action getAction ( int number ) override;
 
 
@@ -70,6 +83,11 @@ public:
     // YOUR CODE BEGINS
     // ======================================================================
     
+    void flagAllCoveredNeighbors(Tile t);
+    void uncoverAllCoveredNeighbors(Tile t);
+    Tile generateRandomNeighbor(Tile t);
+    int getSurroundingFlagged(Tile myTile);
+    int getTotalNeighbors(Tile myTile);
 
     // ======================================================================
     // YOUR CODE ENDS
