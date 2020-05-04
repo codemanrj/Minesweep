@@ -82,6 +82,8 @@ Agent::Action MyAI::getAction( int number )
         //if EffectiveLabel(x) = 0, then all UnMarkedNeighbors(x) must be safe
 
         uncoveredFrontier.pop();
+        int coveredTiles = getSurroundingCovered(curTile);
+        
         for (int i = curTile.x-1; i <= curTile.x+1; i++)
         {
             for (int j = curTile.y-1; j <= curTile.y+1; j++)
@@ -97,6 +99,7 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
+        if (coveredTiles == 0) uncoveredFrontier.pop();//remove from queue when all neighbors uncovered
     }
 
     else if (board[curTile.x][curTile.y] > 0)//1 or more mines around the tile
@@ -142,10 +145,6 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
-        
-            
-
-        
         
         uncoveredFrontier.pop(); //pops if no action taken
         if (coveredNeighbors > 0) uncoveredFrontier.push(curTile); //requeue if there are still surrounding covered tiles
