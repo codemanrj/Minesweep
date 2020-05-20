@@ -145,7 +145,7 @@ Agent::Action MyAI::getAction( int number )
             // all other surrounding unflagged tiles can be uncovered safely
             //int flaggedNeighbors = getSurroundingFlagged(curTile);
 
-            if (totalNeighbors == number)
+            if (coveredNeighbors == number)
             {
                 for (int i = curTile.x-1; i <= curTile.x+1; i++)
                 {
