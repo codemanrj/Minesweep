@@ -68,11 +68,11 @@ Agent::Action MyAI::getAction( int number )
     //if (number != -1)//if last action was uncover
     //always the case
     //number will return -1 if last action is flag
-    if (number >= 0) 
-    {
-        board[lastTile.x][lastTile.y] = number;
-        uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
-    }        
+    //if (number >= 0) 
+    //{
+    board[lastTile.x][lastTile.y] = number;
+    uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
+    //}        
 
     if (!actionQueue.empty())//if list of uncover actions is not empty
     {
@@ -83,7 +83,9 @@ Agent::Action MyAI::getAction( int number )
         return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
     }
     
-    for (int k = 0; k < uncoveredFrontier.size() + buf; k++)
+    int frontierSize = uncoveredFrontier.size()
+    
+    for (int k = 0; k < frontierSize + buf; k++)
     {
         buf = 0;
         if ((totalMines == coveredTiles))//all mines found
@@ -97,7 +99,7 @@ Agent::Action MyAI::getAction( int number )
         uncoveredFrontier.pop();
         } while (getSurroundingCovered(curTile) == 0);
         
-        cout << "curTile = x: " << curTile.x << " y: " << curTile.y << endl;
+        cout << "curTile = x: " << curTile.x + 1 << " y: " << curTile.y + 1 << endl;
         
         if (board[curTile.x][curTile.y] == 0)//no mines around current tile
         {
@@ -179,6 +181,8 @@ Agent::Action MyAI::getAction( int number )
     Tile curTile = uncoveredFrontier.front();
     uncoveredFrontier.pop();
     Tile randNeighbor = generateRandomNeighbor(curTile);
+    if (getSurroundingCovered(curTile) > 0) uncoveredFrontier.push(curTile);
+    cout << "Random Tile | x: " << randNeighbor.x + 1 << " y: " << randNeighbor.y + 1 << endl;
     lastTile = randNeighbor;
     coveredTiles--;
     return {UNCOVER, randNeighbor.x, randNeighbor.y};
