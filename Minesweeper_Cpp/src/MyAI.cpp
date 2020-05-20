@@ -83,7 +83,7 @@ Agent::Action MyAI::getAction( int number )
         return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
     }
     
-    int frontierSize = uncoveredFrontier.size()
+    int frontierSize = uncoveredFrontier.size();
     
     for (int k = 0; k < frontierSize + buf; k++)
     {
