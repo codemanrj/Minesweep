@@ -65,6 +65,24 @@ Agent::Action MyAI::getAction( int number )
     
     int buf = 1;//stopgap measure to make sure loop runs at the start with empty queue
     
+    //if (number != -1)//if last action was uncover
+    //always the case
+    //number will return -1 if last action is flag
+    if (number >= 0) 
+    {
+        board[lastTile.x][lastTile.y] = number;
+        uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
+    }        
+
+    if (!actionQueue.empty())//if list of uncover actions is not empty
+    {
+        Tile curTile = actionQueue.front();
+        actionQueue.pop();
+        coveredTiles--;
+        lastTile = {curTile.x, curTile.y};
+        return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
+    }
+    
     for (int k = 0; k < uncoveredFrontier.size() + buf; k++)
     {
         buf = 0;
@@ -73,26 +91,7 @@ Agent::Action MyAI::getAction( int number )
             return {LEAVE,-1,-1};
         }
         
-
-        //if (number != -1)//if last action was uncover
-        //always the case
-        //number will return -1 if last action is flag
-        if (number >= 0) 
-        {
-            board[lastTile.x][lastTile.y] = number;
-            uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
-        }        
-
         Tile curTile;
-        if (!actionQueue.empty())//if list of uncover actions is not empty
-        {
-            curTile = actionQueue.front();
-            actionQueue.pop();
-            coveredTiles--;
-            lastTile = {curTile.x, curTile.y};
-            return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
-        }
-        
         curTile = uncoveredFrontier.front();
         uncoveredFrontier.pop();
         if (board[curTile.x][curTile.y] == 0)//no mines around current tile
