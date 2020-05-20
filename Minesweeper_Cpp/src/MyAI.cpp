@@ -86,13 +86,15 @@ Agent::Action MyAI::getAction( int number )
         Tile curTile;
         if (!actionQueue.empty())//if list of uncover actions is not empty
         {
-            curTile = actionQueue.pop();
+            curTile = actionQueue.front();
+            actionQueue.pop();
             coveredTiles--;
             lastTile = {curTile.x, curTile.y};
             return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
         }
         
-        curTile = uncoveredFrontier.pop();
+        curTile = uncoveredFrontier.front();
+        uncoveredFrontier.pop();
         if (board[curTile.x][curTile.y] == 0)//no mines around current tile
         {
             int coveredNeighbors = getSurroundingCovered(curTile);
@@ -112,7 +114,8 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
             
-            curTile = actionQueue.pop();
+            curTile = actionQueue.front();
+            actionQueue.pop();
             coveredTiles--;
             lastTile = {curTile.x, curTile.y};
             return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
@@ -157,7 +160,8 @@ Agent::Action MyAI::getAction( int number )
                         }
                     }
                 }
-                curTile = actionQueue.pop();
+                curTile = actionQueue.front();
+                actionQueue.pop();
                 coveredTiles--;
                 lastTile = {curTile.x, curTile.y};
                 return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
