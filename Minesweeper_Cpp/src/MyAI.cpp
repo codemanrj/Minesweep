@@ -172,6 +172,8 @@ Agent::Action MyAI::getAction( int number )
     }//for loop
     
     //if no actions available, do random
+    Tile curTile = uncoveredFrontier.front();
+    uncoveredFrontier.pop();
     Tile randNeighbor = generateRandomNeighbor(curTile);
     coveredTiles--;
     return {UNCOVER, randNeighbor.x, randNeighbor.y};
