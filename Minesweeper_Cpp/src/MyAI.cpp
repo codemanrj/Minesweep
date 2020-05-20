@@ -92,8 +92,11 @@ Agent::Action MyAI::getAction( int number )
         }
         
         Tile curTile;
+        do {
         curTile = uncoveredFrontier.front();
         uncoveredFrontier.pop();
+        } while (getSurroundingCovered(curTile) == 0);
+        
         if (board[curTile.x][curTile.y] == 0)//no mines around current tile
         {
             int coveredNeighbors = getSurroundingCovered(curTile);
@@ -174,6 +177,7 @@ Agent::Action MyAI::getAction( int number )
     Tile curTile = uncoveredFrontier.front();
     uncoveredFrontier.pop();
     Tile randNeighbor = generateRandomNeighbor(curTile);
+    lastTile = randNeighbor;
     coveredTiles--;
     return {UNCOVER, randNeighbor.x, randNeighbor.y};
 
