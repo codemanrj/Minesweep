@@ -97,6 +97,8 @@ Agent::Action MyAI::getAction( int number )
         uncoveredFrontier.pop();
         } while (getSurroundingCovered(curTile) == 0);
         
+        cout << "curTile = x: " << curTile.x << " y: " << y << endl;
+        
         if (board[curTile.x][curTile.y] == 0)//no mines around current tile
         {
             int coveredNeighbors = getSurroundingCovered(curTile);
