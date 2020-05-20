@@ -54,6 +54,7 @@ public:
     //int colDim;
     Tile lastTile; // x, y coordinates of last tile uncovered
     
+    queue<Tile> actionQueue;
     queue<Tile> uncoveredFrontier;
     queue<Tile> coveredFrontier;
     
