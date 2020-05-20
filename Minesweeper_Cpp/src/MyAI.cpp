@@ -63,7 +63,7 @@ Agent::Action MyAI::getAction( int number )
     
     //do while there is remaining time
     
-    int buf = 1;
+    int buf = 1;//stopgap measure to make sure loop runs at the start with empty queue
     
     for (int k = 0; k < uncoveredFrontier.size() + buf; k++)
     {
@@ -72,6 +72,7 @@ Agent::Action MyAI::getAction( int number )
         {
             return {LEAVE,-1,-1};
         }
+        
 
         //if (number != -1)//if last action was uncover
         //always the case
@@ -80,11 +81,18 @@ Agent::Action MyAI::getAction( int number )
         {
             board[lastTile.x][lastTile.y] = number;
             uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
-        }
-
+        }        
 
         Tile curTile;
-        curTile = uncoveredFrontier.front();
+        if (!actionQueue.empty())//if list of uncover actions is not empty
+        {
+            curTile = actionQueue.pop();
+            coveredTiles--;
+            lastTile = {curTile.x, curTile.y};
+            return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
+        }
+        
+        curTile = uncoveredFrontier.pop();
         if (board[curTile.x][curTile.y] == 0)//no mines around current tile
         {
             int coveredNeighbors = getSurroundingCovered(curTile);
@@ -98,43 +106,43 @@ Agent::Action MyAI::getAction( int number )
                     {
                         if (board[i][j] <= coveredNum) //if tile is a covered tile
                         {
-                            lastTile = {i, j};
-                            coveredTiles--;
-                            return {UNCOVER, i, j};  
+                            actionQueue.push({i, j});  
                         }
                     }
                 }
             }
-            if (coveredNeighbors == 0) uncoveredFrontier.pop();
+            
+            curTile = actionQueue.pop();
+            coveredTiles--;
+            lastTile = {curTile.x, curTile.y};
+            return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
         }
 
         else if (board[curTile.x][curTile.y] > 0)//1 or more mines around the tile
         {
 
-            //subtract num of tiles around the flagged tile
+            //get num of covered neighbors
             int coveredNeighbors = getSurroundingCovered(curTile);
 
             //if effectivelabel(x) = NumUnMarkedNeighbors(x) then all UnMarkedNeighbors(x) must be mines
             if(board[curTile.x][curTile.y] == coveredNeighbors) 
                 flagAllCoveredNeighbors(curTile);
 
-            //add case for random pick (how to detect when to use random?)
-
             //if all the neighbors are covered, randomly pick one
-            int totalNeighbors = getTotalNeighbors(curTile);
+            //int totalNeighbors = getTotalNeighbors(curTile);
 
-            if(coveredNeighbors == totalNeighbors) //or if covered neighbors equals total neighbors
-            {
-                Tile randNeighbor = generateRandomNeighbor(curTile);
-                coveredTiles--;
-                return {UNCOVER, randNeighbor.x, randNeighbor.y};
-            }
+            //if(coveredNeighbors == totalNeighbors) //or if covered neighbors equals total neighbors
+            //{
+            //    Tile randNeighbor = generateRandomNeighbor(curTile);
+            //    coveredTiles--;
+            //    return {UNCOVER, randNeighbor.x, randNeighbor.y};
+            //}
 
             //if curTile has number flagged nieghboring tiles
             // all other surrounding unflagged tiles can be uncovered safely
-            int flaggedNeighbors = getSurroundingFlagged(curTile);
+            //int flaggedNeighbors = getSurroundingFlagged(curTile);
 
-            if (flaggedNeighbors == number)
+            if (totalNeighbors == number)
             {
                 for (int i = curTile.x-1; i <= curTile.x+1; i++)
                 {
@@ -144,22 +152,25 @@ Agent::Action MyAI::getAction( int number )
                         {
                             if (board[i][j] <= coveredNum && board[i][j] != flaggedNum) //if tile is a covered tile and not flagged
                             {
-                                coveredTiles--;
-                                return {UNCOVER, i, j};
+                                actionQueue.push({i, j});
                             }
                         }
                     }
                 }
+                curTile = actionQueue.pop();
+                coveredTiles--;
+                lastTile = {curTile.x, curTile.y};
+                return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
             }
 
-
-
-
-
-            uncoveredFrontier.pop(); //pops if no action taken
-            if (coveredNeighbors > 0) uncoveredFrontier.push(curTile); //requeue if there are still surrounding covered tiles
+            if (getSurroundingCovered(curTile) > 0) uncoveredFrontier.push(curTile); //requeue if there are still surrounding covered tiles
         }
     }//for loop
+    
+    //if no actions available, do random
+    Tile randNeighbor = generateRandomNeighbor(curTile);
+    coveredTiles--;
+    return {UNCOVER, randNeighbor.x, randNeighbor.y};
 
     return {LEAVE,-1,-1};
     // ======================================================================
