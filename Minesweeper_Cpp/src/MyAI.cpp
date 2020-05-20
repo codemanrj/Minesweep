@@ -62,6 +62,7 @@ Agent::Action MyAI::getAction( int number )
     // ======================================================================
     
     //do while there is remaining time
+    cout << "getAction called" << endl;
     
     int buf = 1;//stopgap measure to make sure loop runs at the start with empty queue
     
