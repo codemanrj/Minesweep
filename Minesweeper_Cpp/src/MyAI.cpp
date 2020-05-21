@@ -30,7 +30,7 @@ MyAI::MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX,
     rowDimension = _rowDimension;
     colDimension = _colDimension;
 
-    coveredTiles = rowDimension*colDimension;
+    coveredTiles = rowDimension*colDimension - 1;
 
     board = new int*[rowDimension];
 
@@ -63,6 +63,7 @@ Agent::Action MyAI::getAction( int number )
     
     //do while there is remaining time
     cout << "getAction called" << endl;
+    cout << "covered Tiles: " << coveredTiles << endl;
     
     int buf = 1;//stopgap measure to make sure loop runs at the start with empty queue
     
