@@ -273,7 +273,7 @@ int MyAI::getSurroundingFlagged(Tile myTile)
         {
             if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
             {
-                if (board[i][j] <= flaggedNum && board[i][j] >= coveredNum) //if tile is a flagged tile
+                if (board[i][j] <= flaggedNum && board[i][j] > coveredNum) //if tile is a flagged tile
                 {
                     count++;
                 }
