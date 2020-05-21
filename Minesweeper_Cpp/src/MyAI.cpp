@@ -71,6 +71,7 @@ Agent::Action MyAI::getAction( int number )
     //number will return -1 if last action is flag
     //if (number >= 0) 
     //{
+    number = number - getSurroundingFlagged(lastTile);//set number into effective number
     board[lastTile.x][lastTile.y] = number;
     uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
     //}        
@@ -272,7 +273,7 @@ int MyAI::getSurroundingFlagged(Tile myTile)
         {
             if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
             {
-                if (board[i][j] <= flaggedNum) //if tile is a covered tile
+                if (board[i][j] <= flaggedNum && board[i][j] >= coveredNum) //if tile is a flagged tile
                 {
                     count++;
                 }
