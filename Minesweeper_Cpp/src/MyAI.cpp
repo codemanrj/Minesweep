@@ -134,6 +134,7 @@ Agent::Action MyAI::getAction( int number )
             //get num of covered neighbors
             int coveredNeighbors = getSurroundingCovered(curTile);
 
+            cout << "c0" << endl;
             //if effectivelabel(x) = NumUnMarkedNeighbors(x) then all UnMarkedNeighbors(x) must be mines
             if(board[curTile.x][curTile.y] == coveredNeighbors) 
                 flagAllCoveredNeighbors(curTile);
@@ -151,6 +152,7 @@ Agent::Action MyAI::getAction( int number )
             //if curTile has number flagged nieghboring tiles
             // all other surrounding unflagged tiles can be uncovered safely
             //int flaggedNeighbors = getSurroundingFlagged(curTile);
+            cout << "c1" << endl;
 
             if (coveredNeighbors == board[curTile.x][curTile.y])
             {
@@ -173,6 +175,8 @@ Agent::Action MyAI::getAction( int number )
                 lastTile = {curTile.x, curTile.y};
                 return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
             }
+            
+            cout << "c2" << endl;
 
             if (getSurroundingCovered(curTile) > 0) uncoveredFrontier.push(curTile); //requeue if there are still surrounding covered tiles
         }
