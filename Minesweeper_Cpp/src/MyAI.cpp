@@ -62,8 +62,12 @@ Agent::Action MyAI::getAction( int number )
     // ======================================================================
     
     //do while there is remaining time
-    cout << "getAction called" << endl;
-    cout << "covered Tiles: " << coveredTiles << endl;
+    
+    //**********************************************************************
+    //debugging
+    //cout << "getAction called" << endl;
+    //cout << "covered Tiles: " << coveredTiles << endl;
+    //**********************************************************************
     
     int buf = 1;//stopgap measure to make sure loop runs at the start with empty queue
     
@@ -102,7 +106,7 @@ Agent::Action MyAI::getAction( int number )
         uncoveredFrontier.pop();
         } while (getSurroundingCovered(curTile) == 0);
         
-        cout << "curTile = x: " << curTile.x + 1 << " y: " << curTile.y + 1 << "num: " << board[curTile.x][curTile.y] << endl;
+        //cout << "curTile = x: " << curTile.x + 1 << " y: " << curTile.y + 1 << "num: " << board[curTile.x][curTile.y] << endl;
         
         if (board[curTile.x][curTile.y] == 0)//no mines around current tile
         {
@@ -136,7 +140,6 @@ Agent::Action MyAI::getAction( int number )
             //get num of covered neighbors
             int coveredNeighbors = getSurroundingCovered(curTile);
 
-            cout << "c0" << endl;
             //if effectivelabel(x) = NumUnMarkedNeighbors(x) then all UnMarkedNeighbors(x) must be mines
             if(board[curTile.x][curTile.y] == coveredNeighbors) 
                 flagAllCoveredNeighbors(curTile);
@@ -154,7 +157,6 @@ Agent::Action MyAI::getAction( int number )
             //if curTile has number flagged nieghboring tiles
             // all other surrounding unflagged tiles can be uncovered safely
             //int flaggedNeighbors = getSurroundingFlagged(curTile);
-            cout << "c1" << endl;
 
             if (coveredNeighbors == board[curTile.x][curTile.y])
             {
@@ -178,7 +180,6 @@ Agent::Action MyAI::getAction( int number )
                 return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
             }
             
-            cout << "c2" << endl;
 
             if (getSurroundingCovered(curTile) > 0) uncoveredFrontier.push(curTile); //requeue if there are still surrounding covered tiles
         }
@@ -189,7 +190,7 @@ Agent::Action MyAI::getAction( int number )
     uncoveredFrontier.pop();
     Tile randNeighbor = generateRandomNeighbor(curTile);
     if (getSurroundingCovered(curTile) > 0) uncoveredFrontier.push(curTile);
-    cout << "Random Tile | x: " << randNeighbor.x + 1 << " y: " << randNeighbor.y + 1 << endl;
+    //cout << "Random Tile | x: " << randNeighbor.x + 1 << " y: " << randNeighbor.y + 1 << endl;
     lastTile = randNeighbor;
     coveredTiles--;
     return {UNCOVER, randNeighbor.x, randNeighbor.y};
