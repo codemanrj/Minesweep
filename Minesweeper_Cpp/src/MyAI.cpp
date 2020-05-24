@@ -274,7 +274,7 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
-    } while (added = true);
+    } while (added == true);
     
     cout << "U C init completed" << endl;
 
