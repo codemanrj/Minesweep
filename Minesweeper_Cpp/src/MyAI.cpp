@@ -290,7 +290,7 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
-    } while (added == true);
+    } while (added == true && U.size<=12 && C.size()<=15);
 
     int n = C.size();
 
