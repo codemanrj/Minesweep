@@ -389,7 +389,7 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
             validNum++;
             for (int j=0; j<n; j++)
             {
-                prob.at(i) = bin[i];
+                prob.at(j) = bin[j];
             }
         }
         
