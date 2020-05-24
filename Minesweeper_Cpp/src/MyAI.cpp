@@ -96,6 +96,23 @@ Agent::Action MyAI::getAction( int number )
         //Loop that takes out all the uncovered tiles NOT adjacent to covered unflagged tiles out of uncoveredFrontier
         //finds one with surrounding tiles to work with
         do {
+        if (uncoveredFrontier.empty())//if nothing left in frontier, means there is an isolated tile
+        {
+            //uncover a random covered tile neighboring flagged tiles
+            while (!flaggedTiles.empty())
+            {
+                curTile = flaggedTiles.front();
+                flaggedTiles.pop();
+                if (getTotalNeighbors(curTile) > 0)
+                {
+                    curTile = generateRandomNeighbor(curTile);
+                    lastTile = curTile;
+                    coveredTiles--;
+                    return {UNCOVER, curTile.x, curTile.y};
+                }
+            }
+            
+        }
         curTile = uncoveredFrontier.front(); 
         uncoveredFrontier.pop();
         } while (getSurroundingCovered(curTile) == 0);
@@ -174,7 +191,6 @@ Agent::Action MyAI::getAction( int number )
     }//for loop
     
     //try model checking if it above logic doesn't return
-    cout << "START MODEL CHECKING\n";
     vector<Tile> C;
     vector<Tile> U;
 
@@ -183,7 +199,7 @@ Agent::Action MyAI::getAction( int number )
     bool added = false;
     do
     {
-        cout << "U C init loop" << endl;
+        //cout << "U C init loop" << endl;
         cout << "U: " << U.size() << "C: " << C.size() << endl;
         added = false;
 
@@ -252,7 +268,14 @@ Agent::Action MyAI::getAction( int number )
                             //check for a match in U
                             for(auto u : U)
                             {
+<<<<<<< HEAD
                                 if(u.x == i && u.y == j) 
+=======
+                                bool inU = false;
+
+                                //if covered neighbor is not in U
+                                for(int k = 0; k < U.size(); k++)
+>>>>>>> f18e76da95aeaf1ec2ba1c7ce1b45f4ca09c9f14
                                 {
                                     inU = true;
                                     //added = false;
@@ -276,9 +299,13 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
+<<<<<<< HEAD
     } while (added == true && U.size() < 30 && C.size() < 25);
     
     cout << "U C init completed" << endl;
+=======
+    } while (added == true);
+>>>>>>> f18e76da95aeaf1ec2ba1c7ce1b45f4ca09c9f14
 
     int n = C.size();
 
@@ -289,15 +316,25 @@ Agent::Action MyAI::getAction( int number )
     int minIndex = 0;
     bool flagged = false;
     checkAllBinary(n, arr, 0, U, C, prob, validNum); //all "bit string" vectors
+<<<<<<< HEAD
     cout << "Check All Completed" << endl;
+=======
+    
+    ////////////////////////////////////
+    //cout << "validNum: " << validNum << endl;
+    //for (int i = 0; i<prob.size(); i++)
+    //{
+    //    cout << "( " << C.at(i).x + 1 << ", " << C.at(i).y + 1 << ") ";
+    //    cout << "prob: "<< prob.at(i) << endl;
+    //}
+    ////////////////////////////////////
+>>>>>>> f18e76da95aeaf1ec2ba1c7ce1b45f4ca09c9f14
 
     for (int i = 0; i<prob.size(); i++)
     {
         prob.at(i) = prob.at(i)/validNum;
-        cout << "probability (should be between 0-1): "<< prob.at(i) << endl;
         if (prob.at(i) == 1)
         {
-            cout << "Flagged++" << endl;
             flagged = true;
             flagTile(C.at(i));
         }
@@ -311,11 +348,8 @@ Agent::Action MyAI::getAction( int number )
         }
     }
     
-    cout << "Prob calculated" <<  endl;
-    
     if (!actionQueue.empty())//if list of uncover actions is not empty
     {
-        cout << "Found a 0 probability" << endl;
         Tile curTile = actionQueue.front();
         actionQueue.pop();
         coveredTiles--;
@@ -324,7 +358,6 @@ Agent::Action MyAI::getAction( int number )
     }
     else if (flagged == false)//if no actions taken, uncover min probability
     {
-        cout << "Uncovering lowest probability" << endl;
         Tile curTile = C.at(minIndex);
         coveredTiles--;
         lastTile = {curTile.x, curTile.y};
@@ -359,6 +392,7 @@ Agent::Action MyAI::getAction( int number )
 void MyAI::flagTile(Tile myTile)
 {
     board[myTile.x][myTile.y] = flaggedNum;
+    flaggedTiles.push(myTile);
     for (int i = myTile.x-1; i <= myTile.x+1; i++)
     {
         for (int j = myTile.y-1; j <= myTile.y+1; j++)
@@ -403,7 +437,7 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
 
         for (auto myTile : C)//resets all values
         {
-            cout << "x: " << myTile.x + 1 << "y: " << myTile.y + 1 << endl;
+            //cout << "x: " << myTile.x + 1 << "y: " << myTile.y + 1 << endl;
             board[myTile.x][myTile.y] = coveredNum;
         }
 
@@ -413,6 +447,7 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
     bin[i] = 0;
     checkAllBinary(n, bin, i+1, U, C, prob, validNum);
 
+    //add a check so that there won't be models with no of 1 > mines left
     bin[i] = 1;
     checkAllBinary(n, bin, i+1, U, C, prob, validNum);
 
