@@ -398,7 +398,7 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
                 valid = false;
         }
 
-        if (valid = true)
+        if (valid == true)
         {
             validNum++;
             for (int j=0; j<n; j++)
