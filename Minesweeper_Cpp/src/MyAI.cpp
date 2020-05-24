@@ -69,7 +69,7 @@ Agent::Action MyAI::getAction( int number )
     //cout << "covered Tiles: " << coveredTiles << endl;
     //**********************************************************************
     
-    int buf = 1;//stopgap measure to make sure loop runs at the start with empty queue
+    //int buf = 1;//stopgap measure to make sure loop runs at the start with empty queue
     
     //if (number != -1)//if last action was uncover
     //always the case
@@ -92,9 +92,9 @@ Agent::Action MyAI::getAction( int number )
     
     int frontierSize = uncoveredFrontier.size();
     
-    for (int k = 0; k < frontierSize + buf; k++)
+    for (int k = 0; k < frontierSize; k++)
     {
-        buf = 0;
+        //buf = 0;
         if ((totalMines == coveredTiles))//all mines found
         {
             return {LEAVE,-1,-1};
@@ -147,20 +147,8 @@ Agent::Action MyAI::getAction( int number )
             if(board[curTile.x][curTile.y] == coveredNeighbors) 
                 flagAllCoveredNeighbors(curTile);
 
-            //if all the neighbors are covered, randomly pick one
-            //int totalNeighbors = getTotalNeighbors(curTile);
-
-            //if(coveredNeighbors == totalNeighbors) //or if covered neighbors equals total neighbors
-            //{
-            //    Tile randNeighbor = generateRandomNeighbor(curTile);
-            //    coveredTiles--;
-            //    return {UNCOVER, randNeighbor.x, randNeighbor.y};
-            //}
-
             //if curTile has number flagged nieghboring tiles
             // all other surrounding unflagged tiles can be uncovered safely
-            //int flaggedNeighbors = getSurroundingFlagged(curTile);
-
             if (coveredNeighbors == board[curTile.x][curTile.y])
             {
                 for (int i = curTile.x-1; i <= curTile.x+1; i++)
@@ -186,124 +174,159 @@ Agent::Action MyAI::getAction( int number )
 
             if (getSurroundingCovered(curTile) > 0) uncoveredFrontier.push(curTile); //requeue if there are still surrounding covered tiles
         }
-        else //try model checking
+    }//for loop
+    
+    //try model checking if it above logic doesn't return
+    vector<Tile> C;
+    vector<Tile> U;
+
+    U.push(uncoveredFrontier.front());
+
+    do
+    {
+        bool added = false;
+
+        for(int u = 0; u < U.size(); u++) //for every u in U
         {
-            vector<Tile> C;
-            vector<Tile> U;
+            Tile myTile = U[u];
 
-            U.push(uncoveredFrontier.front());
-
-            do
+            //check neighbors
+            for (int i = myTile.x-1; i <= myTile.x+1; i++)
             {
-                bool added = false;
-
-                for(int u = 0; u < U.size(); u++) //for every u in U
+                for (int j = myTile.y-1; j <= myTile.y+1; j++)
                 {
-                    Tile myTile = U[u];
-
-                    //check neighbors
-                    for (int i = myTile.x-1; i <= myTile.x+1; i++)
+                    if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
                     {
-                        for (int j = myTile.y-1; j <= myTile.y+1; j++)
+                        if (board[i][j] <= coveredNum) //if tile is a covered tile, next step, check if inC
                         {
-                            if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+                            Tile cTile; //cTile(i, j)
+                            cTile.x = i;
+                            cTile.y = j;
+
+                            if(!C.empty())
                             {
-                                if (board[i][j] <= coveredNum) //if tile is a covered tile, next step, check if inC
+                                bool inC = False;
+
+                                //if covered neighbor is not in C
+                                for(int k = 0; k < C.size(); k++)
                                 {
-                                    Tile cTile; //cTile(i, j)
-                                    cTile.x = i;
-                                    cTile.y = j;
-
-                                    if(!C.empty())
+                                    Tile here = C[k];
+                                    if(here.x == cTile.x && here.y == cTile.y) 
                                     {
-                                        bool inC = False;
-
-                                        //if covered neighbor is not in C
-                                        for(int k = 0; k < C.size(); k++)
-                                        {
-                                            Tile here = C[k];
-                                            if(here.x == cTile.x && here.y == cTile.y) 
-                                            {
-                                                inC = True;
-                                            }
-                                        }
-                                        if(inC == False)
-                                        {
-                                            C.push(cTile);
-                                            added = True;
-                                        }
-                                    }
-                                    else //C is Empty so forsure not in C
-                                    {
-                                        C.push(cTile);
-                                        added = True;
+                                        inC = True;
                                     }
                                 }
+                                if(inC == False)
+                                {
+                                    C.push(cTile);
+                                    added = True;
+                                }
+                            }
+                            else //C is Empty so forsure not in C
+                            {
+                                C.push(cTile);
+                                added = True;
                             }
                         }
                     }
                 }
-                //next check u in U neighbors
-                for(int c = 0; c < C.size(); c++) //for every c in C
-                {
-                    Tile myTile = C[c];
-
-                    //check neighbors
-                    for (int i = myTile.x-1; i <= myTile.x+1; i++)
-                    {
-                        for (int j = myTile.y-1; j <= myTile.y+1; j++)
-                        {
-                            if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
-                            {
-                                if (board[i][j] > 0) //if tile is a uncovered tile, next step, check if inU
-                                {
-                                    Tile uTile; //uTile(i, j)
-                                    uTile.x = i;
-                                    uTile.y = j;
-
-                                    if(!U.empty())
-                                    {
-                                        bool inU = False;
-
-                                        //if covered neighbor is not in U
-                                        for(int k = 0; k < C.size(); k++)
-                                        {
-                                            Tile here = U[k];
-                                            if(here.x == uTile.x && here.y == uTile.y) 
-                                            {
-                                                inU = True;
-                                            }
-                                        }
-                                        if(inU == False)
-                                        {
-                                            U.push(uTile);
-                                            added = True;
-                                        }
-                                    }
-                                    else //U is Empty so forsure not in U
-                                    {
-                                        U.push(uTile);
-                                        added = True;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } while (added = True);
-
-            int n = C.size()
-
-
-            checkAllBinary(n, arr[], 0) //all "bit string" vectors
-
-            for(int c = 0; c < C.size(); c++)
-            {
-                //if P[c] = 0;
-                //actionQueue.push(C[c]);
             }
         }
-    }//for loop
+        //next check u in U neighbors
+        for(int c = 0; c < C.size(); c++) //for every c in C
+        {
+            Tile myTile = C[c];
+
+            //check neighbors
+            for (int i = myTile.x-1; i <= myTile.x+1; i++)
+            {
+                for (int j = myTile.y-1; j <= myTile.y+1; j++)
+                {
+                    if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+                    {
+                        if (board[i][j] > 0) //if tile is a uncovered tile, next step, check if inU
+                        {
+                            Tile uTile; //uTile(i, j)
+                            uTile.x = i;
+                            uTile.y = j;
+
+                            if(!U.empty())
+                            {
+                                bool inU = False;
+
+                                //if covered neighbor is not in U
+                                for(int k = 0; k < C.size(); k++)
+                                {
+                                    Tile here = U[k];
+                                    if(here.x == uTile.x && here.y == uTile.y) 
+                                    {
+                                        inU = True;
+                                    }
+                                }
+                                if(inU == False)
+                                {
+                                    U.push(uTile);
+                                    added = True;
+                                }
+                            }
+                            else //U is Empty so forsure not in U
+                            {
+                                U.push(uTile);
+                                added = True;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } while (added = True);
+
+    int n = C.size()
+
+    vector<float> prob(n, 0);//vector of probability
+    int arr[n];
+    int validNum = 0;
+    float minProb = 1;
+    int minIndex = 0;
+    bool flagged = false;
+    checkAllBinary(int n, arr, 0, U, C, prob, validNum); //all "bit string" vectors
+
+    for (int i = 0; i<prob.size(); i++)
+    {
+        prob.at(i) = prob.at(i)/validNum;
+        if (prob.at(i) == 1)
+        {
+            flagged = true;
+            flagTile(C.at(i));
+        }
+        else if (prob.at(i) == 0)
+            actionQueue.push(C.at(i));
+            
+        if (prob.at(i) < minProb)
+        {
+            minProb = prob.at(i);
+            minIndex = i;
+        }
+    }
+    
+    if (!actionQueue.empty())//if list of uncover actions is not empty
+    {
+        Tile curTile = actionQueue.front();
+        actionQueue.pop();
+        coveredTiles--;
+        lastTile = {curTile.x, curTile.y};
+        return {UNCOVER, curTile.x, curTile.y};//uncover next item in list
+    }
+    else if (flagged == false)//if no actions taken, uncover min probability
+    {
+        Tile curTile = C.at(minIndex);
+        coveredTiles--;
+        lastTile = {curTile.x, curTile.y};
+        return {UNCOVER, curTile.x, curTile.y};
+    }
+    //model checking
+    
+    //}//for loop
     
     //if no actions available, do random
     Tile curTile = uncoveredFrontier.front();
@@ -336,19 +359,46 @@ void MyAI::flagTile(Tile myTile)
         {
             if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
             {
-                if(board[i][j] > 0) //added this so only uncoverd tiles with numbers on them are affected
+                if(board[i][j] > 0) //added this so only uncovered tiles with numbers on them are affected
                     board[i][j]--;
             }
         }
     }//subtract the effective number on surrounding tiles
 }
 
-void MyAI::checkAllBinary(int n, int bin[], int i)
+//n is length of vector C and bin
+void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<tile> &C, vector<float> &prob, int &validNum)
 {
     if(i==n)
-    {
-
-    }
+    {   
+        for (j = 0; j<n; j++)//set dummy flags on all C[i] tiles when bin[i] == 1 
+        {
+            if (bin[j] == 1)
+                board[C.at(j).x][C.at(j).y] = dummyFlag;
+        }
+        
+        bool valid = true;
+        //for all uncovered tiles, check if the current model is valid
+        for (auto myTile : U)
+        {
+            if (board[myTile.x][myTile.y] != getSurroundingDummy(myTile))
+                valid = false;
+        }
+        if (valid = true)
+        {
+            validNum++;
+            for (j=0; j<n; j++)
+            {
+                prob.at(i) = bin[i];
+            }
+        }
+        
+        for (auto myTile : C)//resets all values
+        {
+            board[myTile.x][myTile.y] = coveredNum;
+        }
+        
+    }//if (i==n)
 
     bin[i] = 0;
     checkAllBinary(n, bin, i+1);
@@ -411,6 +461,29 @@ int MyAI::getSurroundingFlagged(Tile myTile)
             if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
             {
                 if (board[i][j] <= flaggedNum && board[i][j] > coveredNum) //if tile is a flagged tile
+                {
+                    count++;
+                }
+            }
+        }
+    }
+    return count;
+
+}
+
+int MyAI::getSurroundingDummy(Tile myTile)
+{
+     int count = 0;
+
+    //returns a count of the covered neighbors
+
+    for (int i = myTile.x-1; i <= myTile.x+1; i++)
+    {
+        for (int j = myTile.y-1; j <= myTile.y+1; j++)
+        {
+            if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+            {
+                if (board[i][j] == dummyFlag) //if tile is dummy flagged
                 {
                     count++;
                 }
