@@ -68,14 +68,6 @@ Agent::Action MyAI::getAction( int number )
     //cout << "getAction called" << endl;
     //cout << "covered Tiles: " << coveredTiles << endl;
     //**********************************************************************
-    
-    //int buf = 1;//stopgap measure to make sure loop runs at the start with empty queue
-    
-    //if (number != -1)//if last action was uncover
-    //always the case
-    //number will return -1 if last action is flag
-    //if (number >= 0) 
-    //{
     number = number - getSurroundingFlagged(lastTile);//set number into effective number
     board[lastTile.x][lastTile.y] = number;
     uncoveredFrontier.push({lastTile.x,lastTile.y});//pushes new uncovered tile into queue
@@ -94,7 +86,6 @@ Agent::Action MyAI::getAction( int number )
     
     for (int k = 0; k < frontierSize; k++)
     {
-        //buf = 0;
         if ((totalMines == coveredTiles))//all mines found
         {
             return {LEAVE,-1,-1};
@@ -177,6 +168,7 @@ Agent::Action MyAI::getAction( int number )
     }//for loop
     
     //try model checking if it above logic doesn't return
+    cout << "START MODEL CHECKING\n";
     vector<Tile> C;
     vector<Tile> U;
 
@@ -185,6 +177,7 @@ Agent::Action MyAI::getAction( int number )
     bool added = false;
     do
     {
+        cout << "U C init loop" << endl;
         added = false;
 
         for(int u = 0; u < U.size(); u++) //for every u in U
@@ -281,6 +274,8 @@ Agent::Action MyAI::getAction( int number )
             }
         }
     } while (added = true);
+    
+    cout << "U C init completed" << endl;
 
     int n = C.size();
 
