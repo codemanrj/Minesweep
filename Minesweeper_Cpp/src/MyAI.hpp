@@ -45,6 +45,7 @@ public:
     int** board = NULL;
     const int coveredNum = -100;
     const int flaggedNum = -50;
+    const int dummyFlag = -150;
     int boardSize = 0;
     
     //int totalMines; // number of mines left
@@ -84,11 +85,14 @@ public:
     // YOUR CODE BEGINS
     // ======================================================================
     
+    void checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<tile> &C, vector<float> &prob, int &validNum);
     void flagAllCoveredNeighbors(Tile t);
     void uncoverAllCoveredNeighbors(Tile t);
     Tile generateRandomNeighbor(Tile t);
     int getSurroundingFlagged(Tile myTile);
     int getTotalNeighbors(Tile myTile);
+    
+    
 
     // ======================================================================
     // YOUR CODE ENDS
