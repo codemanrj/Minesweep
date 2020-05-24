@@ -399,8 +399,10 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
         cout << "c4" << endl;
         for (auto myTile : C)//resets all values
         {
+            cout << "x: " << myTile.x << "y: " << myTile.y << endl;
             board[myTile.x][myTile.y] = coveredNum;
         }
+        cout << "c5" << endl;
         
     }//if (i==n)
 
