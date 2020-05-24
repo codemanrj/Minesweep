@@ -90,7 +90,7 @@ public:
     void uncoverAllCoveredNeighbors(Tile t);
     Tile generateRandomNeighbor(Tile t);
     int getSurroundingFlagged(Tile myTile);
-    int MyAI::getSurroundingDummy(Tile myTile);
+    int getSurroundingDummy(Tile myTile);
     int getTotalNeighbors(Tile myTile);
     
     
