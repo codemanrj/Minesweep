@@ -293,7 +293,7 @@ Agent::Action MyAI::getAction( int number )
     cout << "validNum: " << validNum << endl;
     for (int i = 0; i<prob.size(); i++)
     {
-        cout << "( " << C.at(i).x << ", " << C.at(i).y << ") ";
+        cout << "( " << C.at(i).x + 1 << ", " << C.at(i).y + 1 << ") ";
         cout << "prob: "<< prob.at(i) << endl;
     }
     ////////////////////////////////////
