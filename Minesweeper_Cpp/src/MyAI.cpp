@@ -182,9 +182,10 @@ Agent::Action MyAI::getAction( int number )
 
     U.push_back(uncoveredFrontier.front());
 
+    bool added = false;
     do
     {
-        bool added = false;
+        added = false;
 
         for(int u = 0; u < U.size(); u++) //for every u in U
         {
@@ -300,7 +301,7 @@ Agent::Action MyAI::getAction( int number )
             flagTile(C.at(i));
         }
         else if (prob.at(i) == 0)
-            actionQueue.push_back(C.at(i));
+            actionQueue.push(C.at(i));
             
         if (prob.at(i) < minProb)
         {
@@ -332,7 +333,7 @@ Agent::Action MyAI::getAction( int number )
     Tile curTile = uncoveredFrontier.front();
     uncoveredFrontier.pop();
     Tile randNeighbor = generateRandomNeighbor(curTile);
-    if (getSurroundingCovered(curTile) > 0) uncoveredFrontier.push_back(curTile);
+    if (getSurroundingCovered(curTile) > 0) uncoveredFrontier.push(curTile);
     //cout << "Random Tile | x: " << randNeighbor.x + 1 << " y: " << randNeighbor.y + 1 << endl;
     lastTile = randNeighbor;
     coveredTiles--;
@@ -371,7 +372,7 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
 {
     if(i==n)
     {   
-        for (j = 0; j<n; j++)//set dummy flags on all C[i] tiles when bin[i] == 1 
+        for (int j = 0; j<n; j++)//set dummy flags on all C[i] tiles when bin[i] == 1 
         {
             if (bin[j] == 1)
                 board[C.at(j).x][C.at(j).y] = dummyFlag;
@@ -401,10 +402,10 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
     }//if (i==n)
 
     bin[i] = 0;
-    checkAllBinary(n, bin, i+1);
+    checkAllBinary(n, bin, i+1, U, C, prob, validNum);
 
     bin[i] = 1;
-    checkAllBinary(n, bin, i+1);
+    checkAllBinary(n, bin, i+1, U, C, prob, validNum);
 
 }
         
