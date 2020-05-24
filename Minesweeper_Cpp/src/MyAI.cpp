@@ -178,6 +178,7 @@ Agent::Action MyAI::getAction( int number )
     do
     {
         cout << "U C init loop" << endl;
+        cout << "U: " << U.size() << "C: " << C.size() << endl;
         added = false;
 
         for(int u = 0; u < U.size(); u++) //for every u in U
