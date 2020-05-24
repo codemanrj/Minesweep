@@ -96,6 +96,23 @@ Agent::Action MyAI::getAction( int number )
         //Loop that takes out all the uncovered tiles NOT adjacent to covered unflagged tiles out of uncoveredFrontier
         //finds one with surrounding tiles to work with
         do {
+        if (uncoveredFrontier.empty())//if nothing left in frontier, means there is an isolated tile
+        {
+            //uncover a random covered tile neighboring flagged tiles
+            while (!flaggedTiles.empty())
+            {
+                curTile = flaggedTiles.front();
+                flaggedTiles.pop();
+                if (getTotalNeighbors(curTile) > 0)
+                {
+                    curTile = generateRandomNeighbor(curTile);
+                    lastTile = curTile;
+                    coveredTiles--;
+                    return {UNCOVER, curTile.x, curTile.y};
+                }
+            }
+            
+        }
         curTile = uncoveredFrontier.front(); 
         uncoveredFrontier.pop();
         } while (getSurroundingCovered(curTile) == 0);
@@ -356,6 +373,7 @@ Agent::Action MyAI::getAction( int number )
 void MyAI::flagTile(Tile myTile)
 {
     board[myTile.x][myTile.y] = flaggedNum;
+    flaggedTiles.push(myTile);
     for (int i = myTile.x-1; i <= myTile.x+1; i++)
     {
         for (int j = myTile.y-1; j <= myTile.y+1; j++)
@@ -410,6 +428,7 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
     bin[i] = 0;
     checkAllBinary(n, bin, i+1, U, C, prob, validNum);
 
+    //add a check so that there won't be models with no of 1 > mines left
     bin[i] = 1;
     checkAllBinary(n, bin, i+1, U, C, prob, validNum);
 
