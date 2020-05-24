@@ -288,6 +288,15 @@ Agent::Action MyAI::getAction( int number )
     bool flagged = false;
     checkAllBinary(n, arr, 0, U, C, prob, validNum); //all "bit string" vectors
     cout << "Check All Completed" << endl;
+    
+    ////////////////////////////////////
+    cout << "validNum: " << validNum << endl;
+    for (int i = 0; i<prob.size(); i++)
+    {
+        cout << "( " << C.at(i).x << ", " << C.at(i).y << ") ";
+        cout << "prob: "<< prob.at(i) << endl;
+    }
+    ////////////////////////////////////
 
     for (int i = 0; i<prob.size(); i++)
     {
