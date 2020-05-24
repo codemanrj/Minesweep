@@ -180,7 +180,7 @@ Agent::Action MyAI::getAction( int number )
     vector<Tile> C;
     vector<Tile> U;
 
-    U.push(uncoveredFrontier.front());
+    U.push_back(uncoveredFrontier.front());
 
     do
     {
@@ -205,7 +205,7 @@ Agent::Action MyAI::getAction( int number )
 
                             if(!C.empty())
                             {
-                                bool inC = False;
+                                bool inC = false;
 
                                 //if covered neighbor is not in C
                                 for(int k = 0; k < C.size(); k++)
@@ -213,19 +213,19 @@ Agent::Action MyAI::getAction( int number )
                                     Tile here = C[k];
                                     if(here.x == cTile.x && here.y == cTile.y) 
                                     {
-                                        inC = True;
+                                        inC = true;
                                     }
                                 }
-                                if(inC == False)
+                                if(inC == false)
                                 {
-                                    C.push(cTile);
-                                    added = True;
+                                    C.push_back(cTile);
+                                    added = true;
                                 }
                             }
                             else //C is Empty so forsure not in C
                             {
-                                C.push(cTile);
-                                added = True;
+                                C.push_back(cTile);
+                                added = true;
                             }
                         }
                     }
@@ -252,7 +252,7 @@ Agent::Action MyAI::getAction( int number )
 
                             if(!U.empty())
                             {
-                                bool inU = False;
+                                bool inU = false;
 
                                 //if covered neighbor is not in U
                                 for(int k = 0; k < C.size(); k++)
@@ -260,28 +260,28 @@ Agent::Action MyAI::getAction( int number )
                                     Tile here = U[k];
                                     if(here.x == uTile.x && here.y == uTile.y) 
                                     {
-                                        inU = True;
+                                        inU = true;
                                     }
                                 }
-                                if(inU == False)
+                                if(inU == false)
                                 {
-                                    U.push(uTile);
-                                    added = True;
+                                    U.push_back(uTile);
+                                    added = true;
                                 }
                             }
                             else //U is Empty so forsure not in U
                             {
-                                U.push(uTile);
-                                added = True;
+                                U.push_back(uTile);
+                                added = true;
                             }
                         }
                     }
                 }
             }
         }
-    } while (added = True);
+    } while (added = true);
 
-    int n = C.size()
+    int n = C.size();
 
     vector<float> prob(n, 0);//vector of probability
     int arr[n];
@@ -289,7 +289,7 @@ Agent::Action MyAI::getAction( int number )
     float minProb = 1;
     int minIndex = 0;
     bool flagged = false;
-    checkAllBinary(int n, arr, 0, U, C, prob, validNum); //all "bit string" vectors
+    checkAllBinary(n, arr, 0, U, C, prob, validNum); //all "bit string" vectors
 
     for (int i = 0; i<prob.size(); i++)
     {
@@ -300,7 +300,7 @@ Agent::Action MyAI::getAction( int number )
             flagTile(C.at(i));
         }
         else if (prob.at(i) == 0)
-            actionQueue.push(C.at(i));
+            actionQueue.push_back(C.at(i));
             
         if (prob.at(i) < minProb)
         {
@@ -332,7 +332,7 @@ Agent::Action MyAI::getAction( int number )
     Tile curTile = uncoveredFrontier.front();
     uncoveredFrontier.pop();
     Tile randNeighbor = generateRandomNeighbor(curTile);
-    if (getSurroundingCovered(curTile) > 0) uncoveredFrontier.push(curTile);
+    if (getSurroundingCovered(curTile) > 0) uncoveredFrontier.push_back(curTile);
     //cout << "Random Tile | x: " << randNeighbor.x + 1 << " y: " << randNeighbor.y + 1 << endl;
     lastTile = randNeighbor;
     coveredTiles--;
@@ -367,7 +367,7 @@ void MyAI::flagTile(Tile myTile)
 }
 
 //n is length of vector C and bin
-void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<tile> &C, vector<float> &prob, int &validNum)
+void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile> &C, vector<float> &prob, int &validNum)
 {
     if(i==n)
     {   
