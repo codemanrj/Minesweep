@@ -294,6 +294,7 @@ Agent::Action MyAI::getAction( int number )
         prob.at(i) = prob.at(i)/validNum;
         if (prob.at(i) == 1)
         {
+            cout << "Flagged++" << endl;
             flagged = true;
             flagTile(C.at(i));
         }
@@ -311,6 +312,7 @@ Agent::Action MyAI::getAction( int number )
     
     if (!actionQueue.empty())//if list of uncover actions is not empty
     {
+        cout << "Found a 0 probability" << endl;
         Tile curTile = actionQueue.front();
         actionQueue.pop();
         coveredTiles--;
@@ -319,6 +321,7 @@ Agent::Action MyAI::getAction( int number )
     }
     else if (flagged == false)//if no actions taken, uncover min probability
     {
+        cout << "Uncovering lowest probability" << endl;
         Tile curTile = C.at(minIndex);
         coveredTiles--;
         lastTile = {curTile.x, curTile.y};
