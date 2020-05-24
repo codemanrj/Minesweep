@@ -176,8 +176,8 @@ Agent::Action MyAI::getAction( int number )
     bool added = false;
     do
     {
-        cout << "U C init loop" << endl;
-        cout << "U: " << U.size() << "C: " << C.size() << endl;
+        //cout << "U C init loop" << endl;
+        //cout << "U: " << U.size() << "C: " << C.size() << endl;
         added = false;
 
         for(int u = 0; u < U.size(); u++) //for every u in U
@@ -286,12 +286,12 @@ Agent::Action MyAI::getAction( int number )
     checkAllBinary(n, arr, 0, U, C, prob, validNum); //all "bit string" vectors
     
     ////////////////////////////////////
-    cout << "validNum: " << validNum << endl;
-    for (int i = 0; i<prob.size(); i++)
-    {
-        cout << "( " << C.at(i).x + 1 << ", " << C.at(i).y + 1 << ") ";
-        cout << "prob: "<< prob.at(i) << endl;
-    }
+    //cout << "validNum: " << validNum << endl;
+    //for (int i = 0; i<prob.size(); i++)
+    //{
+    //    cout << "( " << C.at(i).x + 1 << ", " << C.at(i).y + 1 << ") ";
+    //    cout << "prob: "<< prob.at(i) << endl;
+    //}
     ////////////////////////////////////
 
     for (int i = 0; i<prob.size(); i++)
@@ -400,7 +400,7 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
 
         for (auto myTile : C)//resets all values
         {
-            cout << "x: " << myTile.x + 1 << "y: " << myTile.y + 1 << endl;
+            //cout << "x: " << myTile.x + 1 << "y: " << myTile.y + 1 << endl;
             board[myTile.x][myTile.y] = coveredNum;
         }
 
