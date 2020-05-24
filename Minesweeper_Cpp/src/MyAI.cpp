@@ -142,7 +142,7 @@ Agent::Action MyAI::getAction( int number )
 
             //if curTile has number flagged nieghboring tiles
             // all other surrounding unflagged tiles can be uncovered safely
-            int flaggedNeighbors = getSurroundingFlagged;
+            int flaggedNeighbors = getSurroundingFlagged(curTile);
             if (flaggedNeighbors == board[curTile.x][curTile.y])
             {
                 for (int i = curTile.x-1; i <= curTile.x+1; i++)
@@ -219,7 +219,7 @@ Agent::Action MyAI::getAction( int number )
                             }
                             else //C is Empty so forsure not in C
                             {
-                                C.push_back(cTile);
+                                C.push_back({i, j});
                                 added = true;
                             }
                         }
