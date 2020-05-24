@@ -268,14 +268,7 @@ Agent::Action MyAI::getAction( int number )
                             //check for a match in U
                             for(auto u : U)
                             {
-<<<<<<< HEAD
                                 if(u.x == i && u.y == j) 
-=======
-                                bool inU = false;
-
-                                //if covered neighbor is not in U
-                                for(int k = 0; k < U.size(); k++)
->>>>>>> f18e76da95aeaf1ec2ba1c7ce1b45f4ca09c9f14
                                 {
                                     inU = true;
                                     //added = false;
@@ -299,13 +292,9 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
-<<<<<<< HEAD
     } while (added == true && U.size() < 30 && C.size() < 25);
     
     cout << "U C init completed" << endl;
-=======
-    } while (added == true);
->>>>>>> f18e76da95aeaf1ec2ba1c7ce1b45f4ca09c9f14
 
     int n = C.size();
 
@@ -316,9 +305,7 @@ Agent::Action MyAI::getAction( int number )
     int minIndex = 0;
     bool flagged = false;
     checkAllBinary(n, arr, 0, U, C, prob, validNum); //all "bit string" vectors
-<<<<<<< HEAD
     cout << "Check All Completed" << endl;
-=======
     
     ////////////////////////////////////
     //cout << "validNum: " << validNum << endl;
@@ -328,7 +315,6 @@ Agent::Action MyAI::getAction( int number )
     //    cout << "prob: "<< prob.at(i) << endl;
     //}
     ////////////////////////////////////
->>>>>>> f18e76da95aeaf1ec2ba1c7ce1b45f4ca09c9f14
 
     for (int i = 0; i<prob.size(); i++)
     {
