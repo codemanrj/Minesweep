@@ -105,10 +105,12 @@ Agent::Action MyAI::getAction( int number )
                 flaggedTiles.pop();
                 if (getTotalNeighbors(curTile) > 0)
                 {
-                    curTile = generateRandomNeighbor(curTile);
-                    lastTile = curTile;
+                    cout << c1 << endl;
+                    Tile randNeighbor = generateRandomNeighbor(curTile);
+                    lastTile = randNeighbor;
+                    cout << c2 << endl;
                     coveredTiles--;
-                    return {UNCOVER, curTile.x, curTile.y};
+                    return {UNCOVER, randNeighbor.x, randNeighbor.y};
                 }
             }
             
