@@ -249,7 +249,7 @@ Agent::Action MyAI::getAction( int number )
                                 bool inU = false;
 
                                 //if covered neighbor is not in U
-                                for(int k = 0; k < C.size(); k++)
+                                for(int k = 0; k < U.size(); k++)
                                 {
                                     Tile here = U[k];
                                     if(here.x == uTile.x && here.y == uTile.y) 
