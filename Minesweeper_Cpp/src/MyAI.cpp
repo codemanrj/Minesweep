@@ -292,6 +292,7 @@ Agent::Action MyAI::getAction( int number )
     for (int i = 0; i<prob.size(); i++)
     {
         prob.at(i) = prob.at(i)/validNum;
+        cout << "probability (should be between 0-1): "<< prob.at(i) << endl;
         if (prob.at(i) == 1)
         {
             cout << "Flagged++" << endl;
@@ -374,14 +375,12 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
 {
     if(i==n)
     {   
-        cout << "c1" << endl;
         for (int j = 0; j<n; j++)//set dummy flags on all C[i] tiles when bin[i] == 1 
         {
             if (bin[j] == 1)
                 board[C.at(j).x][C.at(j).y] = dummyFlag;
         }
         
-        cout << "c2" << endl;
         bool valid = true;
         //for all uncovered tiles, check if the current model is valid
         for (auto myTile : U)
@@ -389,7 +388,7 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
             if (board[myTile.x][myTile.y] != getSurroundingDummy(myTile))
                 valid = false;
         }
-        cout << "c3" << endl;
+
         if (valid = true)
         {
             validNum++;
@@ -399,13 +398,13 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
             }
         }
         
-        cout << "c4" << endl;
+
         for (auto myTile : C)//resets all values
         {
             cout << "x: " << myTile.x + 1 << "y: " << myTile.y + 1 << endl;
             board[myTile.x][myTile.y] = coveredNum;
         }
-        cout << "c5" << endl;
+
         return;
     }//if (i==n)
 
