@@ -287,6 +287,7 @@ Agent::Action MyAI::getAction( int number )
     int minIndex = 0;
     bool flagged = false;
     checkAllBinary(n, arr, 0, U, C, prob, validNum); //all "bit string" vectors
+    cout << "Check All Completed" << endl;
 
     for (int i = 0; i<prob.size(); i++)
     {
@@ -305,6 +306,8 @@ Agent::Action MyAI::getAction( int number )
             minIndex = i;
         }
     }
+    
+    cout << "Prob calculated" <<  endl;
     
     if (!actionQueue.empty())//if list of uncover actions is not empty
     {
