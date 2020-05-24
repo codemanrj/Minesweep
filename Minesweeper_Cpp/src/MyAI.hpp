@@ -85,7 +85,7 @@ public:
     // YOUR CODE BEGINS
     // ======================================================================
     
-    void checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<tile> &C, vector<float> &prob, int &validNum);
+    void checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile> &C, vector<float> &prob, int &validNum);
     void flagAllCoveredNeighbors(Tile t);
     void uncoverAllCoveredNeighbors(Tile t);
     Tile generateRandomNeighbor(Tile t);
