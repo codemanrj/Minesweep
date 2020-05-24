@@ -372,7 +372,38 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
     if(i==n)
     {   
         cout << "c1" << endl;
+        for (int j = 0; j<n; j++)//set dummy flags on all C[i] tiles when bin[i] == 1 
+        {
+            if (bin[j] == 1)
+                board[C.at(j).x][C.at(j).y] = dummyFlag;
+        }
         
+        cout << "c2" << endl;
+        bool valid = true;
+        //for all uncovered tiles, check if the current model is valid
+        for (auto myTile : U)
+        {
+            if (board[myTile.x][myTile.y] != getSurroundingDummy(myTile))
+                valid = false;
+        }
+        cout << "c3" << endl;
+        if (valid = true)
+        {
+            validNum++;
+            for (int j=0; j<n; j++)
+            {
+                prob.at(j) = bin[j];
+            }
+        }
+        
+        cout << "c4" << endl;
+        for (auto myTile : C)//resets all values
+        {
+            cout << "x: " << myTile.x + 1 << "y: " << myTile.y + 1 << endl;
+            board[myTile.x][myTile.y] = coveredNum;
+        }
+        cout << "c5" << endl;
+        return;
     }//if (i==n)
 
     bin[i] = 0;
