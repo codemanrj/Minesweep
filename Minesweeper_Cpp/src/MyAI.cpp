@@ -582,7 +582,7 @@ MyAI::Tile MyAI::generateRandomCoveredNonNeighbor(Tile t)
     {
         for(int j = 0; j < rowDimension; j++)
         {
-            if( !(i < t.x-1 && i > t.x+1) && !(j < t.y-1 && j > t.y+1))
+            if( !(i < t.x-2 && i > t.x+2) && !(j < t.y-2 && j > t.y+2))
             {
                 if(board[i][j] == coveredNum)
                 {
@@ -595,6 +595,39 @@ MyAI::Tile MyAI::generateRandomCoveredNonNeighbor(Tile t)
     int size = random.size();
 
     return random.at(rand()%size);
+}
+
+
+MyAI::Tile MyAI::generateRandomNonFrontier()
+{
+    vector<Tile> random;
+
+    for (int i = 0; i < colDimension; i++)
+    {
+        for(int j = 0; j < rowDimension; j++)
+        {
+                if(board[i][j] == coveredNum)
+                {
+                    random.push_back({i,j});
+                    int covered = getSurroundingCovered({i,j});
+                    int totalNeig = getTotalNeighbors({i,j});
+
+                    if((totalNeigh - covered) == 0) //if uncovered neighbors = 0, it is not in the covered frontier
+                    {
+                        random.push_back({i,j});
+                    }
+                    else //else it is part of the uncovered frontier
+                    {
+                        random.pop_back();
+                    }
+                }
+            }
+        }
+    }
+    int size = random.size();
+
+    return random.at(rand()%size);
+
 }
 
 // ======================================================================

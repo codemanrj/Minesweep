@@ -91,6 +91,7 @@ public:
     void uncoverAllCoveredNeighbors(Tile t);
     Tile generateRandomNeighbor(Tile t);
     Tile generateRandomCoveredNonNeighbor(Tile t);
+    Tile generateRandomNonFrontier();
     int getSurroundingFlagged(Tile myTile);
     int getSurroundingDummy(Tile myTile);
     int getTotalNeighbors(Tile myTile);
