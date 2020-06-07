@@ -323,7 +323,7 @@ Agent::Action MyAI::getAction( int number )
     //    cout << "prob: "<< prob.at(i) << endl;
     //}
     ////////////////////////////////////
-    
+    cout << "validNum: " << validNum << endl;
     for (int i = 0; i<prob.size(); i++)
     {
         prob.at(i) = prob.at(i)/validNum;
