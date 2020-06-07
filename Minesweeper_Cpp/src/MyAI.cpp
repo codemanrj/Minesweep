@@ -365,6 +365,7 @@ Agent::Action MyAI::getAction( int number )
         {
             cout << "do random uncover" << endl;
             Tile curTile = generateRandomNonFrontier();
+            cout << "random get" << endl;
             coveredTiles--;
             lastTile = {curTile.x, curTile.y};
             return {UNCOVER, curTile.x, curTile.y};
