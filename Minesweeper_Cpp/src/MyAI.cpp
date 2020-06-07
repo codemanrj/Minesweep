@@ -354,13 +354,14 @@ Agent::Action MyAI::getAction( int number )
         randomProb = randomProb/coveredTiles;
         //cout << "minProb: " << prob.at(minIndex) << " randomProb: " << randomProb << endl;
 
-        if (prob.at(minIndex) <= randomProb)
-        {
+        //if (prob.at(minIndex) <= randomProb)
+        //{
             Tile curTile = C.at(minIndex);
             coveredTiles--;
             lastTile = {curTile.x, curTile.y};
             return {UNCOVER, curTile.x, curTile.y};
-        }
+        //}
+        /*uncomment to use randomProb
         else//if min probability is bigger than probability of picking fully random
         {
             //cout << "do random uncover" << endl;
@@ -370,6 +371,7 @@ Agent::Action MyAI::getAction( int number )
             lastTile = {curTile.x, curTile.y};
             return {UNCOVER, curTile.x, curTile.y};
         }
+        */
     }
     //model checking
     
