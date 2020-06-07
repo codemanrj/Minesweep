@@ -151,6 +151,19 @@ Agent::Action MyAI::getAction( int number )
             //get num of covered neighbors
             int coveredNeighbors = getSurroundingCovered(curTile);
 
+            if(coveredNeighbors == 8) //first move
+            {
+                if(board[curTile.x][curTile.y] > 2) //if first move has 3 or more surrounding mines, guess again
+                {
+                    Tile r = generateRandomCoveredNonNeighbor(curTile);
+                    lastTile = r;
+                    coveredTiles--;
+                    return {UNCOVER, r.x, r.y};
+                }
+
+            }
+
+
             //if effectivelabel(x) = NumUnMarkedNeighbors(x) then all UnMarkedNeighbors(x) must be mines
             if(board[curTile.x][curTile.y] == coveredNeighbors) 
                 flagAllCoveredNeighbors(curTile);
@@ -559,6 +572,29 @@ MyAI::Tile MyAI::generateRandomNeighbor(Tile t)
     }
 
     return array[rand() % size];
+}
+
+MyAI::Tile MyAI::generateRandomCoveredNonNeighbor(Tile t)
+{
+    vector<Tile> random;
+
+    for (int i = 0; i < colDimension; i++)
+    {
+        for(int j = 0; j < rowDimension; j++)
+        {
+            if( !(i < t.x-1 && i > t.x+1) && !(j < t.y-1 && j > t.y+1))
+            {
+                if(board[i][j] == coveredNum)
+                {
+                    random.push_back({i,j});
+                }
+            }
+        }
+    }
+
+    int size = random.size();
+
+    return random.at(rand()%size);
 }
 
 // ======================================================================
