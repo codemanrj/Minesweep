@@ -350,9 +350,10 @@ Agent::Action MyAI::getAction( int number )
     }
     else if (flagged == false)//if no actions taken, uncover min probability
     {
-        //cout << "t: " << totalMines << " f: " << flagsSet << " c: " << coveredTiles << endl;
+        cout << "tMines: " << totalMines << " flags: " << flagsSet << " covTiles: " << coveredTiles << endl;
         float randomProb = totalMines - flagsSet;
         randomProb = randomProb/coveredTiles;
+        cout << "minProb: " << minProb << " randomProb: " << randomProb << endl;
         //cout << "calc done" << endl;
         if (minProb <= randomProb)
         {
