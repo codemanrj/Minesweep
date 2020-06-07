@@ -321,10 +321,12 @@ Agent::Action MyAI::getAction( int number )
     //    cout << "prob: "<< prob.at(i) << endl;
     //}
     ////////////////////////////////////
-
+    cout << "validNum: " << validNum << endl;
     for (int i = 0; i<prob.size(); i++)
     {
+        cout << "before " << prob.at(i) << endl;
         prob.at(i) = prob.at(i)/validNum;
+        cout << prob.at(i) << endl;
         if (prob.at(i) == 1)
         {
             flagged = true;
@@ -350,7 +352,7 @@ Agent::Action MyAI::getAction( int number )
     }
     else if (flagged == false)//if no actions taken, uncover min probability
     {
-        cout << "tMines: " << totalMines << " flags: " << flagsSet << " covTiles: " << coveredTiles << endl;
+        //cout << "tMines: " << totalMines << " flags: " << flagsSet << " covTiles: " << coveredTiles << endl;
         float randomProb = totalMines - flagsSet;
         randomProb = randomProb/coveredTiles;
         cout << "minProb: " << prob.at(minIndex) << " randomProb: " << randomProb << endl;
@@ -628,30 +630,30 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
                 if(board[i][j] <= coveredNum)
                 {
                     //allRandom.push_back({i,j});
-                    //int covered = getSurroundingCovered({i,j});
-                    //int totalNeigh = getTotalNeighbors({i,j});
+                    int covered = getSurroundingCovered({i,j});
+                    int totalNeigh = getTotalNeighbors({i,j});
 
-                    //if((totalNeigh - covered) == 0) //if uncovered neighbors = 0, it is not in the covered frontier
-                    //{
-                    random.push_back({i,j});
-                    //}
-                    //else //else it is part of the uncovered frontier
-                    //{
-                        //random.pop_back();
-                    //}
+                    if((totalNeigh - covered) == 0) //if uncovered neighbors = 0, it is not in the covered frontier
+                    {
+                        random.push_back({i,j});
+                    }
+                    else //else it is part of the uncovered frontier
+                    {
+                        random.pop_back();
+                    }
                 }
         }
     }
     int size = random.size();
-    //if (size == 0) 
-    //{
-    //    size = allRandom.size();
-    //    return allRandom.at(rand()%size);
-    //}
-    //else 
-    //{
-    return random.at(rand()%size);
-    //}
+    if (size == 0) 
+    {
+        size = allRandom.size();
+        return allRandom.at(rand()%size);
+    }
+    else 
+    {
+        return random.at(rand()%size);
+    }
 
 }
 
