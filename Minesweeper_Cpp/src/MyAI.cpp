@@ -248,7 +248,7 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         } //for loop
-
+        if (C.size >= 18) break;
         //next check u in U neighbors
         for(auto c : C) //for every c in C
         {
@@ -301,7 +301,7 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
-    } while (added == true && U.size()<=18 && C.size()<=18);
+    } while (added == true);// && U.size()<=18 && C.size()<=18);
 
     int n = C.size();
 
@@ -432,7 +432,7 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
         //for all uncovered tiles, check if the current model is valid
         for (auto myTile : U)
         {
-            if (board[myTile.x][myTile.y] < getSurroundingDummy(myTile))
+            if (board[myTile.x][myTile.y] != getSurroundingDummy(myTile))
                 valid = false;
         }
 
