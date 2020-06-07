@@ -364,7 +364,7 @@ Agent::Action MyAI::getAction( int number )
         /*uncomment to use randomProb
         else//if min probability is bigger than probability of picking fully random
         {
-            //cout << "do random uncover" << endl;
+            cout << "do random uncover" << endl;
             Tile curTile = generateRandomNonFrontier();
             //cout << "random get" << endl;
             coveredTiles--;
