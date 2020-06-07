@@ -640,7 +640,9 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
                 }
         }
     }
+    cout << "getting size" << endl;
     int size = random.size();
+    cout << "s: " << size << endl;
 
     return random.at(rand()%size);
 
