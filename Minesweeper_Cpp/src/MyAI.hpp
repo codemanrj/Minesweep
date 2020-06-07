@@ -46,9 +46,10 @@ public:
     const int coveredNum = -100;
     const int flaggedNum = -50;
     const int dummyFlag = -150;
+    const int dummyCovered = -120;
     int boardSize = 0;
     
-    //int totalMines; // number of mines left
+    //int totalMines; // total number of mines
     int coveredTiles; // number of covered tiles left on the board
     int flagsSet = 0; // number of flags set
     //int rowDim;
