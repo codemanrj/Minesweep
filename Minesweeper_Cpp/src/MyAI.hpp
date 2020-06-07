@@ -58,6 +58,7 @@ public:
     queue<Tile> actionQueue;
     queue<Tile> uncoveredFrontier;
     queue<Tile> coveredFrontier;
+    queue<Tile> flaggedTiles;
     
     void flagTile(Tile myTile);//flags myTile
     int getSurroundingCovered(Tile myTile);//returns number of covered tiles around the myTile
