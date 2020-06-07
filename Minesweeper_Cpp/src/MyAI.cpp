@@ -353,7 +353,7 @@ Agent::Action MyAI::getAction( int number )
         cout << "tMines: " << totalMines << " flags: " << flagsSet << " covTiles: " << coveredTiles << endl;
         float randomProb = totalMines - flagsSet;
         randomProb = randomProb/coveredTiles;
-        cout << "minProb: " << prob.at(i) << " randomProb: " << randomProb << endl;
+        cout << "minProb: " << prob.at(minIndex) << " randomProb: " << randomProb << endl;
         //cout << "calc done" << endl;
         if (prob.at(minIndex) <= randomProb)
         {
