@@ -32,19 +32,19 @@ MyAI::MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX,
 
     coveredTiles = rowDimension*colDimension - 1;
 
-    board = new int*[rowDimension];
+    board = new int*[colDimension];
 
     boardSize = rowDimension;
 
-    for(int i = 0; i < rowDimension; i++)
+    for(int i = 0; i < colDimension; i++)
     {
-        board[i] = new int[colDimension];
+        board[i] = new int[rowDimension];
     }
 
 
-    for (int i = 0; i < rowDimension; i++)
+    for (int i = 0; i < colDimension; i++)
     {
-        for (int j = 0; j < colDimension; j++)
+        for (int j = 0; j < rowDimension; j++)
         {
             board[i][j] = coveredNum; //covered tiles
         }
@@ -103,12 +103,12 @@ Agent::Action MyAI::getAction( int number )
             {
                 curTile = flaggedTiles.front();
                 flaggedTiles.pop();
-                if (getTotalNeighbors(curTile) > 0)
+                if (getSurroundingCovered(curTile) > 0)
                 {
-                    curTile = generateRandomNeighbor(curTile);
-                    lastTile = curTile;
+                    Tile randNeighbor = generateRandomNeighbor(curTile);
+                    lastTile = randNeighbor;
                     coveredTiles--;
-                    return {UNCOVER, curTile.x, curTile.y};
+                    return {UNCOVER, randNeighbor.x, randNeighbor.y};
                 }
             }
             
@@ -128,7 +128,7 @@ Agent::Action MyAI::getAction( int number )
             {
                 for (int j = curTile.y-1; j <= curTile.y+1; j++)
                 {
-                    if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+                    if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
                     {
                         if (board[i][j] <= coveredNum) //if tile is a covered tile
                         {
@@ -163,7 +163,7 @@ Agent::Action MyAI::getAction( int number )
                 {
                     for (int j = curTile.y-1; j <= curTile.y+1; j++)
                     {
-                        if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+                        if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
                         {
                             if (board[i][j] <= coveredNum && board[i][j] != flaggedNum) //if tile is a covered tile and not flagged
                             {
@@ -192,7 +192,7 @@ Agent::Action MyAI::getAction( int number )
     do
     {
         //cout << "U C init loop" << endl;
-        cout << "U: " << U.size() << "C: " << C.size() << endl;
+        //cout << "U: " << U.size() << "C: " << C.size() << endl;
         added = false;
 
         for(int u = 0; u < U.size(); u++) //for every u in U
@@ -204,7 +204,7 @@ Agent::Action MyAI::getAction( int number )
             {
                 for (int j = myTile.y-1; j <= myTile.y+1; j++)
                 {
-                    if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+                    if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
                     {
                         if (board[i][j] <= coveredNum) //if tile is a covered tile, next step, check if inC
                         {
@@ -252,7 +252,7 @@ Agent::Action MyAI::getAction( int number )
             {
                 for (int j = myTile.y-1; j <= myTile.y+1; j++)
                 {
-                    if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+                    if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
                     {
                         if (board[i][j] > 0) //if tile is a uncovered tile, next step, check if inU
                         {
@@ -288,9 +288,8 @@ Agent::Action MyAI::getAction( int number )
                     }
                 }
             }
-        } //for loop #2
-
-    } while (added == true);
+        }
+    } while (added == true && U.size()<=12 && C.size()<=15);
 
     int n = C.size();
 
@@ -378,7 +377,7 @@ void MyAI::flagTile(Tile myTile)
     {
         for (int j = myTile.y-1; j <= myTile.y+1; j++)
         {
-            if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+            if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
             {
                 if(board[i][j] > 0) //added this so only uncovered tiles with numbers on them are affected
                     board[i][j]--;
@@ -444,7 +443,7 @@ int MyAI::getSurroundingCovered(Tile myTile)
     {
         for (int j = myTile.y-1; j <= myTile.y+1; j++)
         {
-            if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+            if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
             {
                 if (board[i][j] <= coveredNum) //if tile is a covered tile
                 {
@@ -464,7 +463,7 @@ int MyAI::getTotalNeighbors(Tile myTile)
     {
         for (int j = myTile.y-1; j <= myTile.y+1; j++)
         {
-            if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+            if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
             {
                     count++;
             }
@@ -484,7 +483,7 @@ int MyAI::getSurroundingFlagged(Tile myTile)
     {
         for (int j = myTile.y-1; j <= myTile.y+1; j++)
         {
-            if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+            if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
             {
                 if (board[i][j] <= flaggedNum && board[i][j] > coveredNum) //if tile is a flagged tile
                 {
@@ -507,7 +506,7 @@ int MyAI::getSurroundingDummy(Tile myTile)
     {
         for (int j = myTile.y-1; j <= myTile.y+1; j++)
         {
-            if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+            if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
             {
                 if (board[i][j] == dummyFlag) //if tile is dummy flagged
                 {
@@ -526,7 +525,7 @@ void MyAI::flagAllCoveredNeighbors(Tile t)
     {
         for (int j = t.y-1; j <= t.y+1; j++)
         {
-            if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+            if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
             {
                 if (board[i][j] <= coveredNum) //if tile is a covered tile
                 {
@@ -549,7 +548,7 @@ MyAI::Tile MyAI::generateRandomNeighbor(Tile t)
     {
         for (int j = t.y-1; j <= t.y+1; j++)
         {
-            if (i >= 0 && i < rowDimension && j >= 0 && j < colDimension)
+            if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
             {
                 if (board[i][j] <= coveredNum) //if tile is a covered tile
                 {
