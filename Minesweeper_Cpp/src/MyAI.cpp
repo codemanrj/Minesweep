@@ -350,10 +350,10 @@ Agent::Action MyAI::getAction( int number )
     }
     else if (flagged == false)//if no actions taken, uncover min probability
     {
-        cout << "t: " << totalMines << " f: " << flagsSet << " c: " << coveredTiles << endl;
+        //cout << "t: " << totalMines << " f: " << flagsSet << " c: " << coveredTiles << endl;
         float randomProb = totalMines - flagsSet;
         randomProb = randomProb/coveredTiles;
-        cout << "calc done" << endl;
+        //cout << "calc done" << endl;
         if (minProb <= randomProb)
         {
             Tile curTile = C.at(minIndex);
@@ -365,7 +365,7 @@ Agent::Action MyAI::getAction( int number )
         {
             cout << "do random uncover" << endl;
             Tile curTile = generateRandomNonFrontier();
-            cout << "random get" << endl;
+            //cout << "random get" << endl;
             coveredTiles--;
             lastTile = {curTile.x, curTile.y};
             return {UNCOVER, curTile.x, curTile.y};
@@ -618,6 +618,7 @@ MyAI::Tile MyAI::generateRandomCoveredNonNeighbor(Tile t)
 MyAI::Tile MyAI::generateRandomNonFrontier()
 {
     vector<Tile> random;
+    vector<Tile> allRandom;
 
     for (int i = 0; i < colDimension; i++)
     {
@@ -625,7 +626,7 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
         {
                 if(board[i][j] <= coveredNum)
                 {
-                    //random.push_back({i,j});
+                    allRandom.push_back({i,j});
                     int covered = getSurroundingCovered({i,j});
                     int totalNeigh = getTotalNeighbors({i,j});
 
@@ -640,11 +641,16 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
                 }
         }
     }
-    cout << "getting size" << endl;
     int size = random.size();
-    cout << "s: " << size << endl;
-
-    return random.at(rand()%size);
+    if (size == 0) 
+    {
+        size = allRandom.size();
+        return allRandom.at(rand()%size);
+    }
+    else 
+    {
+        return random.at(rand()%size);
+    }
 
 }
 
