@@ -298,7 +298,7 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
-    } while (added == true && U.size()<=18 && C.size()<=18);
+    } while (added == true && U.size()<=16 && C.size()<=16);
     cout << "U: " << U.size() << "C: " << C.size() << endl;
     
     int n = C.size();
