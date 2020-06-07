@@ -363,6 +363,7 @@ Agent::Action MyAI::getAction( int number )
         }
         else//if min probability is bigger than probability of picking fully random
         {
+            cout << "do random uncover" << endl;
             Tile curTile = generateRandomNonFrontier();
             coveredTiles--;
             lastTile = {curTile.x, curTile.y};
@@ -623,7 +624,7 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
         {
                 if(board[i][j] <= coveredNum)
                 {
-                    random.push_back({i,j});
+                    //random.push_back({i,j});
                     int covered = getSurroundingCovered({i,j});
                     int totalNeigh = getTotalNeighbors({i,j});
 
@@ -631,10 +632,10 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
                     {
                         random.push_back({i,j});
                     }
-                    else //else it is part of the uncovered frontier
-                    {
-                        random.pop_back();
-                    }
+                    //else //else it is part of the uncovered frontier
+                    //{
+                        //random.pop_back();
+                    //}
                 }
         }
     }
