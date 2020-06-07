@@ -301,7 +301,7 @@ Agent::Action MyAI::getAction( int number )
             }
         }
     } while (added == true && U.size()<=16 && C.size()<=16);
-    cout << "U: " << U.size() << "C: " << C.size() << endl;
+    //cout << "U: " << U.size() << "C: " << C.size() << endl;
     
     int n = C.size();
 
@@ -325,7 +325,7 @@ Agent::Action MyAI::getAction( int number )
     //    cout << "prob: "<< prob.at(i) << endl;
     //}
     ////////////////////////////////////
-    cout << "validNum: " << validNum << endl;
+    
     for (int i = 0; i<prob.size(); i++)
     {
         prob.at(i) = prob.at(i)/validNum;
@@ -358,14 +358,14 @@ Agent::Action MyAI::getAction( int number )
         randomProb = randomProb/coveredTiles;
         //cout << "minProb: " << prob.at(minIndex) << " randomProb: " << randomProb << endl;
 
-        //if (prob.at(minIndex) <= randomProb)
-        //{
+        if (prob.at(minIndex) <= randomProb)
+        {
             Tile curTile = C.at(minIndex);
             coveredTiles--;
             lastTile = {curTile.x, curTile.y};
             return {UNCOVER, curTile.x, curTile.y};
-        //}
-        /*uncomment to use randomProb
+        }
+        //uncomment to use randomProb
         else//if min probability is bigger than probability of picking fully random
         {
             cout << "do random uncover" << endl;
@@ -375,7 +375,7 @@ Agent::Action MyAI::getAction( int number )
             lastTile = {curTile.x, curTile.y};
             return {UNCOVER, curTile.x, curTile.y};
         }
-        */
+        
     }
     //model checking
     
@@ -637,27 +637,27 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
         {
                 if(board[i][j] <= coveredNum)
                 {
-                    //allRandom.push_back({i,j});
-                    //int covered = getSurroundingCovered({i,j});
-                    //int totalNeigh = getTotalNeighbors({i,j});
+                    allRandom.push_back({i,j});
+                    int covered = getSurroundingCovered({i,j});
+                    int totalNeigh = getTotalNeighbors({i,j});
 
-                    //if((totalNeigh - covered) == 0) //if uncovered neighbors = 0, it is not in the covered frontier
-                    //{
-                    random.push_back({i,j});
-                    //}
+                    if((totalNeigh - covered) == 0) //if uncovered neighbors = 0, it is not in the covered frontier
+                    {
+                        random.push_back({i,j});
+                    }
                 }
         }
     }
     int size = random.size();
-    //if (size == 0) 
-    //{
-    //    size = allRandom.size();
-    //    return allRandom.at(rand()%size);
-    //}
-    //else 
-    //{
+    if (size == 0) 
+    {
+        size = allRandom.size();
+        return allRandom.at(rand()%size);
+    }
+    else 
+    {
     return random.at(rand()%size);
-    //}
+    }
 
 }
 
