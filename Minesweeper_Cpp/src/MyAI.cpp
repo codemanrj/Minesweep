@@ -229,7 +229,7 @@ Agent::Action MyAI::getAction( int number )
                                     if(c.x == i && c.y == j) 
                                     {
                                         inC = true;
-                                        //added = false;
+                                        break;
                                     }
                                 }
                                 if(inC == false)
@@ -274,14 +274,12 @@ Agent::Action MyAI::getAction( int number )
                             //check for a match in U
                             for(auto u : U)
                             {
-                                bool inU = false;
-
                                 //if covered neighbor is not in U
-                                for(int k = 0; k < U.size(); k++)
-                                {
+                                    if (u.x == i && u.y == j)
+                                    {
                                     inU = true;
-                                    //added = false;
-                                }
+                                    break;
+                                    }
                             }
 
                             //if covered neighbor is not in U, add it
