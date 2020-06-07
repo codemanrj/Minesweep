@@ -248,7 +248,6 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         } //for loop
-        if (C.size() >= 15) break;
         //next check u in U neighbors
         for(auto c : C) //for every c in C
         {
@@ -299,7 +298,7 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
-    } while (added == true);// && U.size()<=18 && C.size()<=18);
+    } while (added == true && U.size()<=18 && C.size()<=18);
     cout << "U: " << U.size() << "C: " << C.size() << endl;
     
     int n = C.size();
@@ -311,6 +310,10 @@ Agent::Action MyAI::getAction( int number )
     int minIndex = 0;
     bool flagged = false;
     checkAllBinary(n, arr, 0, U, C, prob, validNum); //all "bit string" vectors
+    for (auto myTile : C)//resets all values
+    {
+        board[myTile.x][myTile.y] = coveredNum;
+    }
     
     ////////////////////////////////////
     //cout << "validNum: " << validNum << endl;
@@ -421,6 +424,11 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
 {
     if(i==n)
     {   
+        for (auto myTile : C)//resets all values
+        {
+            board[myTile.x][myTile.y] = dummyCovered;
+        }
+        
         for (int j = 0; j<n; j++)//set dummy flags on all C[i] tiles when bin[i] == 1 
         {
             if (bin[j] == 1)
@@ -431,8 +439,15 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
         //for all uncovered tiles, check if the current model is valid
         for (auto myTile : U)
         {
-            if (board[myTile.x][myTile.y] != getSurroundingDummy(myTile))
-                valid = false;
+            int dummyNum = getSurroundingDummy(myTile);
+            if (board[myTile.x][myTile.y] != dummyNum)
+            {
+                dummyNum = board[myTile.x][myTile.y] - dummyNum;//number of free mines left
+                if (dummyNum < 0)
+                    valid = false;
+                if (getSurroundingCovered(myTile) < dummyNum)
+                    valid = false;
+            }
         }
 
         if (valid == true)
@@ -442,13 +457,6 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
             {
                 prob.at(j) = prob.at(j) + bin[j];
             }
-        }
-        
-
-        for (auto myTile : C)//resets all values
-        {
-            //cout << "x: " << myTile.x + 1 << "y: " << myTile.y + 1 << endl;
-            board[myTile.x][myTile.y] = coveredNum;
         }
 
         return;
@@ -475,7 +483,7 @@ int MyAI::getSurroundingCovered(Tile myTile)
         {
             if (i >= 0 && i < colDimension && j >= 0 && j < rowDimension)
             {
-                if (board[i][j] <= coveredNum) //if tile is a covered tile
+                if (board[i][j] <= coveredNum && board[i][j] > dummyCovered) //if tile is a covered tile
                 {
                     count++;
                 }
