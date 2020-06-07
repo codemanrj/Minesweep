@@ -634,7 +634,6 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
                         random.pop_back();
                     }
                 }
-            }
         }
     }
     int size = random.size();
