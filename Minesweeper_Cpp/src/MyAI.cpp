@@ -248,7 +248,7 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         } //for loop
-        if (C.size >= 18) break;
+        if (C.size() >= 18) break;
         //next check u in U neighbors
         for(auto c : C) //for every c in C
         {
