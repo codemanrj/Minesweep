@@ -433,7 +433,7 @@ void MyAI::checkAllBinary(int n, int bin[], int i, vector<Tile> &U, vector<Tile>
         //for all uncovered tiles, check if the current model is valid
         for (auto myTile : U)
         {
-            if (board[myTile.x][myTile.y] != getSurroundingDummy(myTile))
+            if (board[myTile.x][myTile.y] < getSurroundingDummy(myTile))
                 valid = false;
         }
 
