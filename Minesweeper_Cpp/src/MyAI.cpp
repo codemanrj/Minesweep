@@ -355,7 +355,7 @@ Agent::Action MyAI::getAction( int number )
         randomProb = randomProb/coveredTiles;
         cout << "minProb: " << prob.at(i) << " randomProb: " << randomProb << endl;
         //cout << "calc done" << endl;
-        if (prob.at(i) <= randomProb)
+        if (prob.at(minIndex) <= randomProb)
         {
             Tile curTile = C.at(minIndex);
             coveredTiles--;
