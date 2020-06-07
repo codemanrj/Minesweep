@@ -350,8 +350,10 @@ Agent::Action MyAI::getAction( int number )
     }
     else if (flagged == false)//if no actions taken, uncover min probability
     {
+        cout << "t: " << totalMines << " f: " << flagsSet << " c: " << coveredTiles << endl;
         float randomProb = totalMines - flagsSet;
         randomProb = randomProb/coveredTiles;
+        cout << "calc done" << endl;
         if (minProb <= randomProb)
         {
             Tile curTile = C.at(minIndex);
