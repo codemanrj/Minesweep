@@ -205,7 +205,7 @@ Agent::Action MyAI::getAction( int number )
     do
     {
         //cout << "U C init loop" << endl;
-        //cout << "U: " << U.size() << "C: " << C.size() << endl;
+        cout << "U: " << U.size() << "C: " << C.size() << endl;
         added = false;
 
         for(auto u : U) //for every u in U
