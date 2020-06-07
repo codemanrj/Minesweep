@@ -210,6 +210,7 @@ Agent::Action MyAI::getAction( int number )
 
         for(auto u : U) //for every u in U
         {
+            if (C.size() > 16) break;
             //check neighbors
             for (int i = u.x-1; i <= u.x+1; i++)
             {
@@ -251,6 +252,7 @@ Agent::Action MyAI::getAction( int number )
         //next check u in U neighbors
         for(auto c : C) //for every c in C
         {
+            
             //check neighbors for new u tiles
             for (int i = c.x-1; i <= c.x+1; i++)
             {
