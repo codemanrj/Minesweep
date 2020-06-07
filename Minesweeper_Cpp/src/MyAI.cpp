@@ -301,7 +301,7 @@ Agent::Action MyAI::getAction( int number )
                 }
             }
         }
-    } while (added == true && U.size()<=12 && C.size()<=15);
+    } while (added == true && U.size()<=18 && C.size()<=18);
 
     int n = C.size();
 
@@ -629,7 +629,7 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
         {
                 if(board[i][j] <= coveredNum)
                 {
-                    //allRandom.push_back({i,j});
+                    allRandom.push_back({i,j});
                     int covered = getSurroundingCovered({i,j});
                     int totalNeigh = getTotalNeighbors({i,j});
 
@@ -637,10 +637,10 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
                     {
                         random.push_back({i,j});
                     }
-                    else //else it is part of the uncovered frontier
-                    {
-                        random.pop_back();
-                    }
+                    //else //else it is part of the uncovered frontier
+                    //{
+                    //    random.pop_back();
+                    //}
                 }
         }
     }
