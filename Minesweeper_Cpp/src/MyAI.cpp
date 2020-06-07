@@ -619,11 +619,11 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
     {
         for(int j = 0; j < rowDimension; j++)
         {
-                if(board[i][j] == coveredNum)
+                if(board[i][j] <= coveredNum)
                 {
                     random.push_back({i,j});
                     int covered = getSurroundingCovered({i,j});
-                    int totalNeig = getTotalNeighbors({i,j});
+                    int totalNeigh = getTotalNeighbors({i,j});
 
                     if((totalNeigh - covered) == 0) //if uncovered neighbors = 0, it is not in the covered frontier
                     {
