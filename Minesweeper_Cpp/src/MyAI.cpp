@@ -626,14 +626,14 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
         {
                 if(board[i][j] <= coveredNum)
                 {
-                    allRandom.push_back({i,j});
-                    int covered = getSurroundingCovered({i,j});
-                    int totalNeigh = getTotalNeighbors({i,j});
+                    //allRandom.push_back({i,j});
+                    //int covered = getSurroundingCovered({i,j});
+                    //int totalNeigh = getTotalNeighbors({i,j});
 
-                    if((totalNeigh - covered) == 0) //if uncovered neighbors = 0, it is not in the covered frontier
-                    {
-                        random.push_back({i,j});
-                    }
+                    //if((totalNeigh - covered) == 0) //if uncovered neighbors = 0, it is not in the covered frontier
+                    //{
+                    random.push_back({i,j});
+                    //}
                     //else //else it is part of the uncovered frontier
                     //{
                         //random.pop_back();
@@ -642,15 +642,15 @@ MyAI::Tile MyAI::generateRandomNonFrontier()
         }
     }
     int size = random.size();
-    if (size == 0) 
-    {
-        size = allRandom.size();
-        return allRandom.at(rand()%size);
-    }
-    else 
-    {
-        return random.at(rand()%size);
-    }
+    //if (size == 0) 
+    //{
+    //    size = allRandom.size();
+    //    return allRandom.at(rand()%size);
+    //}
+    //else 
+    //{
+    return random.at(rand()%size);
+    //}
 
 }
 
