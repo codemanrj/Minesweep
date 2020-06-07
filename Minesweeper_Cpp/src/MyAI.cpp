@@ -350,10 +350,22 @@ Agent::Action MyAI::getAction( int number )
     }
     else if (flagged == false)//if no actions taken, uncover min probability
     {
-        Tile curTile = C.at(minIndex);
-        coveredTiles--;
-        lastTile = {curTile.x, curTile.y};
-        return {UNCOVER, curTile.x, curTile.y};
+        float randomProb = totalMines - flagsSet;
+        randomProb = randomProb/coveredTiles;
+        if (minProb <= randomProb)
+        {
+            Tile curTile = C.at(minIndex);
+            coveredTiles--;
+            lastTile = {curTile.x, curTile.y};
+            return {UNCOVER, curTile.x, curTile.y};
+        }
+        else//if min probability is bigger than probability of picking fully random
+        {
+            Tile curTile = generateRandomNonFrontier();
+            coveredTiles--;
+            lastTile = {curTile.x, curTile.y};
+            return {UNCOVER, curTile.x, curTile.y};
+        }
     }
     //model checking
     
@@ -385,6 +397,7 @@ void MyAI::flagTile(Tile myTile)
 {
     board[myTile.x][myTile.y] = flaggedNum;
     flaggedTiles.push(myTile);
+    flagsSet++;
     for (int i = myTile.x-1; i <= myTile.x+1; i++)
     {
         for (int j = myTile.y-1; j <= myTile.y+1; j++)
